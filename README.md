@@ -44,7 +44,7 @@ Quotes show a single total (no VAT). Names and notes in the sheet can be Arabic 
 
 ## Using it
 - **Prices** — search, or tap a category. Tap **+** to add to the quote; a bar above the tabs shows the running total.
-- **Quote** — −/+ quantity, type a unit price to override it for this quote only (marked *Manual*; also how you price POA items). Fill in *Prepared for*, reference (auto `Q-YYYYMMDD`) and notes. **Share** opens your phone's share sheet (or copies the text), **PDF / Print** prints a clean quotation (choose *Save as PDF*), **CSV** downloads for Excel, **Clear** empties it. The quote is kept on the device.
+- **Quote** — −/+ quantity, type a unit price to override it for this quote only (marked *Manual*; also how you price POA items). Fill in *Prepared for*, reference (auto `Q-YYYYMMDD`) and notes. **Share image** makes a branded JPEG of the quote and opens your phone's share sheet — pick WhatsApp (on a computer it downloads the image). **Share text** sends it as plain text (or copies it), **PDF / Print** prints a clean quotation (choose *Save as PDF*), **Clear** empties it. The quote is kept on the device.
 - **Refresh** — ↻ reloads the sheet; it also reloads when you reopen the app after 5+ minutes.
 
 ## Privacy — read this

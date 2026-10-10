@@ -405,9 +405,9 @@ function viewQuote() {
     <div class="poa" id="t-poa"${q.poa ? "" : " hidden"}>Excludes POA items — type a unit price to include them.</div>
   </div>
   <div class="actions">
-    <button class="btn primary" data-act="share">Share</button>
+    <button class="btn primary" data-act="image">Share image</button>
+    <button class="btn" data-act="share">Share text</button>
     <button class="btn" data-act="print">PDF / Print</button>
-    <button class="btn" data-act="csv">Download CSV</button>
     <button class="btn danger" data-act="clear">Clear quote</button>
   </div>
   <div style="margin-top:18px">
@@ -468,15 +468,102 @@ async function shareQuote() {
   try { await navigator.clipboard.writeText(text); toast("Quote copied"); }
   catch (e) { const t = document.createElement("textarea"); t.value = text; document.body.appendChild(t); t.select(); document.execCommand("copy"); t.remove(); toast("Quote copied"); }
 }
-function downloadCSV() {
-  const q = computeQuote(), ref = state.quote.ref || autoRef();
-  const cell = v => `"${String(v ?? "").replace(/"/g, '""')}"`;
-  const rows = [["Reference", "Prepared for", "Code", "Procedure", "Qty", "Unit price", "Line total", "Currency", "Note"]];
-  q.lines.forEach(x => rows.push([ref, state.quote.for, x.l.code, x.p ? x.p.name : "", x.l.qty, x.unit ?? "POA", x.total ?? "", CFG.currency, basis(x)]));
-  rows.push([], ["", "", "", "Total", "", "", q.total, CFG.currency]);
-  const blob = new Blob(["﻿" + rows.map(r => r.map(cell).join(",")).join("\r\n")], {type: "text/csv"});
-  const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = ref + ".csv"; a.click();
+/* Quote as a JPEG (for WhatsApp etc.), drawn straight onto a canvas.
+   Runs twice: once to measure the height, once to draw. */
+function drawQuote(ctx, W, draw) {
+  const q = computeQuote(), ref = state.quote.ref || autoRef(), who = state.quote.for.trim();
+  const P = 64, GREEN = "#1f7a4f", DARK = "#124a33", INK = "#1d2a23", MUTED = "#5f6e66", LINE = "#d4e3d9";
+  const SANS = 'system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans","Noto Sans Arabic",sans-serif';
+  const SERIF = 'Georgia,"Times New Roman","Noto Serif",serif';
+  const font = (w, px, fam = SANS) => { ctx.font = `${w} ${px}px ${fam}`; };
+  const text = (t, x, y, color = INK, align = "left") => { if (draw) { ctx.fillStyle = color; ctx.textAlign = align; ctx.fillText(t, x, y); } };
+  const box = (x, y, w, h, r, color) => { if (draw) { ctx.fillStyle = color; ctx.beginPath(); ctx.roundRect ? ctx.roundRect(x, y, w, h, r) : ctx.rect(x, y, w, h); ctx.fill(); } };
+  const hr = (y, color = LINE, h = 2) => { if (draw) { ctx.fillStyle = color; ctx.fillRect(P, y, W - 2 * P, h); } };
+  const wrap = (t, maxW) => {
+    const out = []; let cur = "";
+    for (const w of String(t).split(/\s+/).filter(Boolean)) {
+      const next = cur ? cur + " " + w : w;
+      if (cur && ctx.measureText(next).width > maxW) { out.push(cur); cur = w; } else cur = next;
+    }
+    return cur ? [...out, cur] : out.length ? out : [""];
+  };
+  const spacing = v => { if ("letterSpacing" in ctx) ctx.letterSpacing = v; };
+  ctx.textBaseline = "alphabetic";
+  if (draw) { ctx.fillStyle = "#eaf3ee"; ctx.fillRect(0, 0, W, ctx.canvas.height); }
+
+  // header: logo, wordmark, quotation ref
+  let y = P;
+  const r = 46, cx = P + r, cy = y + r, k = r / 32;
+  if (draw) {
+    ctx.fillStyle = GREEN; ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = "#fff"; ctx.fillRect(cx - 6 * k, cy - 17 * k, 12 * k, 34 * k); ctx.fillRect(cx - 17 * k, cy - 6 * k, 34 * k, 12 * k);
+  }
+  font(700, 50, SERIF); text(CFG.title, cx + r + 22, cy + 4, DARK);
+  if (CFG.subtitle) { font(700, 17); spacing("6px"); text(CFG.subtitle.toUpperCase(), cx + r + 24, cy + 38, GREEN); spacing("0px"); }
+  font(700, 36, SERIF); text("Quotation", W - P, cy - 8, DARK, "right");
+  font(400, 22); text(ref, W - P, cy + 24, MUTED, "right"); text(fmtDate(new Date()), W - P, cy + 52, MUTED, "right");
+  y = cy + r + 30; hr(y, GREEN, 4); y += 4 + 44;
+
+  if (who) { font(400, 22); text("Prepared for", P, y, MUTED); y += 40; font(700, 32); text(who, P, y); y += 36; }
+
+  // items card
+  const pad = 28, colR = 260, nameW = W - 2 * P - 2 * pad - colR;
+  const rows = q.lines.map(x => {
+    font(600, 30); const name = wrap(x.p ? x.p.name : x.l.code, nameW);
+    return {x, name, h: pad * 2 + name.length * 38 + 34};
+  });
+  const cardH = rows.reduce((a, rw) => a + rw.h, 0);
+  y += 8; box(P, y, W - 2 * P, cardH, 24, "#fff");
+  rows.forEach((rw, i) => {
+    let ry = y + pad + 30;
+    if (i && draw) { ctx.fillStyle = LINE; ctx.fillRect(P + pad, y, W - 2 * P - 2 * pad, 2); }
+    font(600, 30); rw.name.forEach(t => { text(t, P + pad, ry); ry += 38; });
+    const x = rw.x, per = x.p && x.p.unit ? " per " + x.p.unit : "";
+    font(400, 24); text(x.unit == null ? `Qty ${x.l.qty}${x.p && x.p.unit ? " · per " + x.p.unit : ""} · price on application` : `${x.l.qty} × ${money(x.unit)}${per}`, P + pad, ry + 2, MUTED);
+    font(700, 32); text(x.total == null ? "POA" : money(x.total), W - P - pad, y + pad + 30, INK, "right");
+    y += rw.h;
+  });
+  y += 28;
+
+  // total bar
+  box(P, y, W - 2 * P, 104, 24, DARK);
+  font(600, 30); text("Total", P + 36, y + 64, "#fff");
+  font(700, 44); text(money(q.total), W - P - 36, y + 68, "#fff", "right");
+  y += 104;
+  if (q.poa) { y += 40; font(400, 22); text("POA items are priced on application and not included in the total.", P, y, "#a3520a"); }
+
+  const notes = state.quote.notes.trim();
+  if (notes) {
+    y += 56; font(700, 22); text("Notes", P, y, MUTED); y += 36;
+    font(400, 26); notes.split(/\n/).forEach(par => wrap(par, W - 2 * P).forEach(t => { text(t, P, y); y += 36; }));
+    y -= 36;
+  }
+  y += 52; font(400, 22); text(`Valid until ${fmtDate(validUntil())} · All prices in ${CFG.currency}`, P, y, MUTED);
+
+  // footer: contact details
+  const contact = [CFG.contactName, CFG.phone && "Tel " + CFG.phone, CFG.instagram && "Instagram " + CFG.instagram].filter(Boolean);
+  if (contact.length) {
+    y += 36; hr(y); y += 48;
+    if (CFG.companyName) { font(700, 26); text(CFG.companyName, P, y, DARK); y += 38; }
+    font(400, 24); contact.forEach(t => { text(t, P, y, INK); y += 34; }); y -= 34;
+  }
+  return y + P;
+}
+async function shareImage() {
+  const c = document.createElement("canvas"); c.width = 1080;
+  c.height = Math.ceil(drawQuote(c.getContext("2d"), c.width, false));
+  drawQuote(c.getContext("2d"), c.width, true);
+  const name = (state.quote.ref || autoRef()) + ".jpg";
+  const blob = await new Promise(res => c.toBlob(res, "image/jpeg", 0.92));
+  const file = new File([blob], name, {type: "image/jpeg"});
+  if (navigator.canShare && navigator.canShare({files: [file]})) {
+    try { await navigator.share({files: [file], title: "Quote " + name.replace(/\.jpg$/, "")}); return; }
+    catch (e) { if (e.name === "AbortError") return; }
+  }
+  // No file sharing (e.g. desktop): save the image instead.
+  const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = name; a.click();
   setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+  toast("Image saved");
 }
 function buildPrint() {
   const q = computeQuote(), ref = state.quote.ref || autoRef(), who = state.quote.for.trim();
@@ -515,7 +602,7 @@ document.addEventListener("click", e => {
   else if (d.go) setView(d.go);
   else if (d.act === "share") shareQuote();
   else if (d.act === "print") printQuote();
-  else if (d.act === "csv") downloadCSV();
+  else if (d.act === "image") shareImage();
   else if (d.act === "clear" && confirm("Clear this quote?")) { state.quote = {lines: [], notes: "", ref: "", for: ""}; saveQuote(); render(); }
 });
 $("#main").addEventListener("input", e => {
