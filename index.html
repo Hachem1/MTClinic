@@ -18,8 +18,6 @@
 :root{
   --bg:#f5f6f8;--card:#fff;--ink:#15181d;--muted:#667080;--line:#e2e5ea;--soft:#eef0f3;
   --accent:#1f5bd8;--accent-ink:#fff;
-  --contract:#7a3cc8;--contract-bg:#f1e9fb;
-  --disc:#13784a;--disc-bg:#e3f4ea;
   --up:#a3520a;--up-bg:#fcefdf;
   --danger:#c93b3b;
   --radius:14px;--shadow:0 1px 2px rgba(0,0,0,.05),0 2px 8px rgba(0,0,0,.04);
@@ -29,14 +27,12 @@
 @media (prefers-color-scheme:dark){:root{
   --bg:#0e1014;--card:#171a20;--ink:#e7e9ed;--muted:#97a0ae;--line:#272b33;--soft:#1f232a;
   --accent:#6f96ff;--accent-ink:#0b0d11;
-  --contract:#c39bff;--contract-bg:#2a1f3d;
-  --disc:#62d49c;--disc-bg:#13281e;
   --up:#f2b46a;--up-bg:#2e2213;--danger:#ff7676;--shadow:none}}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 [hidden]{display:none!important}
 html,body{margin:0}
 body{background:var(--bg);color:var(--ink);font:16px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased;overscroll-behavior-y:none}
-button,input,select,textarea{font:inherit;color:inherit}
+button,input,textarea{font:inherit;color:inherit}
 button{cursor:pointer;touch-action:manipulation}
 .wrap{max-width:760px;margin:0 auto;padding:0 16px}
 
@@ -45,18 +41,16 @@ header.top{position:sticky;top:0;z-index:20;background:var(--bg);padding-top:env
 .bar{display:flex;align-items:center;gap:10px;padding:10px 0 8px}
 .brand{font-weight:700;font-size:18px;letter-spacing:-.01em;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .sync{font-size:12px;color:var(--muted);white-space:nowrap}
-.sync.off{color:var(--up)}
+.sync.off{color:var(--danger)}
 .iconbtn{border:1px solid var(--line);background:var(--card);border-radius:12px;height:44px;min-width:44px;padding:0 10px;display:inline-flex;align-items:center;justify-content:center;gap:6px;text-decoration:none;color:var(--ink);font-size:14px}
 .iconbtn svg{width:18px;height:18px}
 .iconbtn.spin svg{animation:spin 1s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-select,input[type=search],input[type=number],input[type=text],textarea{width:100%;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:0 12px;height:46px;outline:none;font-size:16px;-webkit-appearance:none;appearance:none}
-#customer{height:50px;font-size:17px}
-select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23888' stroke-width='2' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px;font-weight:600}
+input[type=search],input[type=number],input[type=text],textarea{width:100%;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:0 12px;height:46px;outline:none;font-size:16px;-webkit-appearance:none;appearance:none}
 textarea{height:auto;min-height:80px;padding:10px 12px;resize:vertical}
-select:focus,input:focus,textarea:focus{border-color:var(--accent)}
-.controls{display:flex;flex-direction:column;gap:8px;padding-bottom:8px}
-.chips{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin:0 -16px;padding:0 16px 6px}
+input:focus,textarea:focus{border-color:var(--accent)}
+.controls{padding-bottom:8px}
+.chips{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin:0 -16px;padding:0 16px 8px}
 .chips::-webkit-scrollbar{display:none}
 .chip{flex:none;border:1px solid var(--line);background:var(--card);border-radius:22px;padding:0 16px;height:44px;font-size:14px;font-weight:600;color:var(--muted)}
 .chip[aria-pressed=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
@@ -64,11 +58,8 @@ select:focus,input:focus,textarea:focus{border-color:var(--accent)}
 main{padding:14px 0 calc(var(--nav-h) + var(--safe-b) + 24px)}
 main.has-sum{padding-bottom:calc(var(--nav-h) + var(--safe-b) + 96px)}
 .banner{background:var(--soft);border-radius:12px;padding:10px 12px;font-size:14px;color:var(--muted);margin-bottom:12px}
-.banner.off{background:var(--up-bg);color:var(--up)}
 .banner.err{background:transparent;border:1px solid var(--danger);color:var(--danger)}
 .banner code{font-size:13px}
-.custcard{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline;margin:0 2px 12px;font-size:13px;color:var(--muted)}
-.custcard b{color:var(--ink);font-size:15px}
 .group{margin-bottom:18px}
 .group h3{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:0 0 6px 4px}
 .list{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
@@ -78,14 +69,9 @@ main.has-sum{padding-bottom:calc(var(--nav-h) + var(--safe-b) + 96px)}
 .meta{font-size:13px;color:var(--muted);margin-top:2px}
 .price{text-align:right}
 .now{font-weight:700;font-size:17px;font-variant-numeric:tabular-nums;white-space:nowrap}
-.was{font-size:12px;color:var(--muted);text-decoration:line-through;font-variant-numeric:tabular-nums}
-.badge{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;margin-top:3px;background:var(--soft);color:var(--muted);white-space:nowrap}
-.b-contract{background:var(--contract-bg);color:var(--contract)}
-.b-disc{background:var(--disc-bg);color:var(--disc)}
-.b-up{background:var(--up-bg);color:var(--up)}
+.badge{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;background:var(--soft);color:var(--muted);white-space:nowrap}
 .add{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--card);font-size:22px;line-height:1;color:var(--accent);display:flex;align-items:center;justify-content:center}
 .add.in{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-size:14px;font-weight:700}
-.add:disabled{opacity:.3}
 .add:active{transform:scale(.92)}
 .empty{padding:40px 20px;text-align:center;color:var(--muted)}
 .empty b{display:block;color:var(--ink);margin-bottom:4px}
@@ -100,17 +86,18 @@ main.has-sum{padding-bottom:calc(var(--nav-h) + var(--safe-b) + 96px)}
 .qtop .info{flex:1;min-width:0}
 .rm{border:0;background:transparent;color:var(--muted);width:44px;height:44px;margin:-10px -12px 0 0;font-size:22px;flex:none}
 .qbot{display:flex;align-items:center;gap:10px;margin-top:10px}
-.qty{display:flex;align-items:center;border:1px solid var(--line);border-radius:12px;overflow:hidden;height:44px;flex:none}
+.qty{display:flex;align-items:center;border:1px solid var(--line);border-radius:12px;overflow:hidden;height:46px;flex:none}
 .qty button{border:0;background:var(--soft);width:44px;height:100%;font-size:20px}
 .qty input{border:0;border-radius:0;height:100%;text-align:center;padding:0;width:46px;background:var(--card);font-weight:700}
 .unit{flex:1;min-width:0}
-.unit input{height:44px;text-align:right;padding-right:12px}
+.unit input{height:46px;text-align:right;padding-right:12px}
 .src{vertical-align:1px;margin:0 0 0 6px}
 .src.man{background:var(--up-bg);color:var(--up)}
 .ltot{min-width:84px;text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
 .totals{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:12px 14px;margin-top:12px;font-variant-numeric:tabular-nums}
 .totals div{display:flex;justify-content:space-between;padding:3px 0;color:var(--muted)}
 .totals .grand{border-top:1px solid var(--line);margin-top:6px;padding-top:9px;font-weight:700;font-size:19px;color:var(--ink)}
+.totals .poa{font-size:13px;color:var(--up)}
 .actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
 .btn{border:1px solid var(--line);background:var(--card);border-radius:12px;height:48px;padding:0 14px;font-weight:600;font-size:15px;display:flex;align-items:center;justify-content:center;gap:8px}
 .btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
@@ -125,18 +112,9 @@ main.has-sum{padding-bottom:calc(var(--nav-h) + var(--safe-b) + 96px)}
 .sum-in .t b{font-size:18px;font-variant-numeric:tabular-nums}
 .sum-in button{border:0;background:var(--bg);color:var(--ink);height:44px;border-radius:10px;padding:0 16px;font-weight:700}
 
-/* compare */
-.cmp-pick{margin-bottom:12px}
-.crow{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:12px 14px;border-top:1px solid var(--line);width:100%;background:transparent;border-left:0;border-right:0;border-bottom:0;text-align:left}
-.crow:first-child{border-top:0}
-.crow.sel{background:var(--soft)}
-.crow .bar-wrap{grid-column:1/-1;margin-top:0}
-.bar-wrap{height:4px;background:var(--soft);border-radius:4px;margin-top:6px;overflow:hidden}
-.bar-fill{height:100%;background:var(--accent);border-radius:4px}
-
 /* bottom nav */
 nav.bottom{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--card);border-top:1px solid var(--line);padding-bottom:var(--safe-b)}
-nav.bottom .in{max-width:760px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);height:var(--nav-h)}
+nav.bottom .in{max-width:760px;margin:0 auto;display:grid;grid-template-columns:repeat(2,1fr);height:var(--nav-h)}
 .tab{border:0;background:transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:12px;font-weight:600;color:var(--muted);position:relative}
 .tab svg{width:24px;height:24px}
 .tab[aria-selected=true]{color:var(--accent)}
@@ -146,12 +124,6 @@ nav.bottom .in{max-width:760px;margin:0 auto;display:grid;grid-template-columns:
 .toast{position:fixed;left:50%;bottom:calc(var(--nav-h) + var(--safe-b) + 88px);transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:9px 16px;border-radius:20px;font-size:14px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:50;white-space:nowrap}
 .toast.show{opacity:1}
 #printArea{display:none}
-
-@media (min-width:700px){
-  .controls{flex-direction:row}
-  .controls .cust{flex:1}
-  .controls .srch{flex:1.3}
-}
 
 @media print{
   @page{margin:16mm}
@@ -187,9 +159,8 @@ nav.bottom .in{max-width:760px;margin:0 auto;display:grid;grid-template-columns:
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/></svg>
     </button>
   </div>
-  <div class="controls">
-    <div class="cust"><select id="customer" aria-label="Customer"></select></div>
-    <div class="srch"><input id="search" type="search" placeholder="Search procedures" autocomplete="off" enterkeyhint="search" aria-label="Search"></div>
+  <div class="controls" id="filters">
+    <input id="search" type="search" placeholder="Search procedures" autocomplete="off" enterkeyhint="search" aria-label="Search">
   </div>
   <div class="chips" id="chips"></div>
 </div></header>
@@ -202,8 +173,6 @@ nav.bottom .in{max-width:760px;margin:0 auto;display:grid;grid-template-columns:
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>Prices</button>
   <button class="tab" data-view="quote" role="tab">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 2h9l5 5v15H6z"/><path d="M14 2v6h6M9 13h7M9 17h5"/></svg>Quote<span class="count" id="qcount"></span></button>
-  <button class="tab" data-view="compare" role="tab">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>Compare</button>
 </div></nav>
 
 <div id="printArea"></div>
@@ -215,12 +184,12 @@ nav.bottom .in{max-width:760px;margin:0 auto;display:grid;grid-template-columns:
 
 /* ---------- config ---------- */
 const USER = window.PRICING_CONFIG || {};
-const CFG = Object.assign({sheetId:"",title:"Procedure Pricing",companyName:"",defaultCurrency:"GBP",locale:"en-GB",vatPct:0,quoteValidityDays:30}, USER);
-CFG.tabs = Object.assign({procedures:"Procedures",customers:"Customers",prices:"Prices"}, USER.tabs || {});
+const CFG = Object.assign({sheetId:"", title:"Procedure Pricing", companyName:"", locale:"en-GB", vatPct:0, quoteValidityDays:30}, USER);
+CFG.currency = String(USER.currency || USER.defaultCurrency || "GBP").toUpperCase();
+CFG.tab = USER.tab || (USER.tabs && USER.tabs.procedures) || "Procedures";
 const pageUrl = new URL(location.href);
 if (pageUrl.searchParams.get("sheet")) CFG.sheetId = pageUrl.searchParams.get("sheet").trim();
-const DEMO = !CFG.sheetId;
-const NS = "pricing:" + (CFG.sheetId || "demo") + ":";
+const NS = "pricing:" + CFG.sheetId + ":";
 const store = {
   get(k, d) { try { const v = localStorage.getItem(NS + k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
   set(k, v) { try { localStorage.setItem(NS + k, JSON.stringify(v)); } catch (e) {} }
@@ -229,23 +198,18 @@ const store = {
 /* ---------- helpers ---------- */
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+// Accepts "£1,250.00", "1250", "€ 99" etc.
 const num = v => { let s = String(v ?? "").trim(); if (!s) return null; s = s.replace(/[^0-9.\-]/g, ""); if (!s || s === "-" || s === ".") return null; const n = parseFloat(s); return isNaN(n) ? null : n; };
-const pctNum = v => { const s = String(v ?? "").trim(); const n = num(s); if (n == null) return null; return (!s.includes("%") && n !== 0 && Math.abs(n) < 1) ? n * 100 : n; };
 const truthy = v => !/^(false|no|n|0|inactive)$/i.test(String(v ?? "").trim());
-const toDate = v => { const s = String(v ?? "").trim(); if (!s) return null; let m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/); if (m) return new Date(+m[1], m[2]-1, +m[3]); m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/); if (m) return new Date(+m[3], m[2]-1, +m[1]); const d = new Date(s); return isNaN(d) ? null : d; };
 const r2 = n => Math.round(n * 100) / 100;
-const fmtPct = n => (Math.round(Math.abs(n) * 100) / 100) + "%";
-const adj = d => (d >= 0 ? "−" : "+") + fmtPct(d);
 const today = () => { const d = new Date(); d.setHours(0,0,0,0); return d; };
 const fmtDate = d => d.toLocaleDateString(CFG.locale, {day:"numeric", month:"short", year:"numeric"});
 const fmtTime = t => new Date(t).toLocaleTimeString(CFG.locale, {hour:"2-digit", minute:"2-digit"});
-const stamp = t => t ? new Date(t).toLocaleDateString(CFG.locale, {day:"numeric", month:"short"}) + " " + fmtTime(t) : "";
-const fmtCache = {};
-function money(n, cur) {
+let fmt;
+function money(n) {
   if (n == null || isNaN(n)) return "POA";
-  cur = String(cur || CFG.defaultCurrency).toUpperCase();
-  try { return (fmtCache[cur] ||= new Intl.NumberFormat(CFG.locale, {style:"currency", currency:cur})).format(n); }
-  catch (e) { return cur + " " + n.toFixed(2); }
+  try { return (fmt ||= new Intl.NumberFormat(CFG.locale, {style:"currency", currency:CFG.currency})).format(n); }
+  catch (e) { return CFG.currency + " " + n.toFixed(2); }
 }
 let toastT;
 function toast(msg) { const t = $("#toast"); t.textContent = msg; t.classList.add("show"); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove("show"), 1600); }
@@ -270,185 +234,92 @@ function table(rows) {
   const out = rows.filter(r => r.some(v => v.trim() !== "")).map(r => Object.fromEntries(headers.map((k, i) => [k, (r[i] ?? "").trim()])));
   return {headers, rows: out};
 }
-const pick = (o, ...ks) => {
-  for (const k of ks) if (o[k] !== undefined && o[k] !== "") return o[k];
-  for (const k of ks) { const m = Object.keys(o).find(x => x.startsWith(k + "_") && o[x] !== ""); if (m) return o[m]; }
-  return "";
-};
-const has = (t, ...ks) => ks.some(k => t.headers.some(h => h === k || h.startsWith(k + "_")));
+const pick = (o, ...ks) => { for (const k of ks) if (o[k] !== undefined && o[k] !== "") return o[k]; return ""; };
+const has = (t, ...ks) => ks.some(k => t.headers.includes(k));
 
 /* ---------- data ---------- */
-/* gviz silently returns the FIRST tab when a tab name is wrong, so each tab's
-   headers are checked: does it look like the tab we asked for, like another
-   known tab (→ tab missing), or like neither (→ wrong headers)? */
-const KINDS = {
-  procedures: {need: [["code", "name"], ["base_price", "list_price"]], label: "code, name, category, unit, base_price, notes, active",
-    looks: t => has(t, "base_price", "list_price")},
-  customers: {need: [["customer_id", "id"], ["name", "customer_name"]], label: "customer_id, name, currency, discount_pct, fx_rate, notes, active",
-    looks: t => has(t, "customer_id") && has(t, "fx_rate", "currency") && !has(t, "base_price", "valid_from")},
-  prices: {need: [["customer_id", "customer"], ["code", "category"], ["price", "discount_pct", "discount"]], label: "customer_id, code, category, price, discount_pct, valid_from, valid_to, notes",
-    looks: t => has(t, "customer_id") && has(t, "valid_from", "valid_to") && !has(t, "base_price")}
-};
-function checkTab(kind, t) {
-  const name = CFG.tabs[kind];
-  if (!t.headers.length || !t.headers.some(Boolean))
-    return `Tab “${name}” is empty or missing. Check the tab name in the sheet matches config.js → tabs.${kind}.`;
-  const other = Object.keys(KINDS).find(k => k !== kind && KINDS[k].looks(t) && !KINDS[kind].looks(t));
-  if (other) return `Tab “${name}” wasn’t found in the sheet (Google returned the “${CFG.tabs[other]}” tab instead). Check the tab name matches config.js → tabs.${kind}.`;
-  const missing = KINDS[kind].need.filter(alts => !has(t, ...alts)).map(alts => alts[0]);
-  if (missing.length) return `Tab “${name}” has the wrong headers — missing ${missing.join(", ")}. Row 1 should be: ${KINDS[kind].label}.`;
-  return "";
-}
-function normalise(raw) {
-  const {p: P, c: C, r: R} = raw;
-  const pe = checkTab("procedures", P); if (pe) throw new Error(pe);
-  const ce = checkTab("customers", C); if (ce) throw new Error(ce);
-  const re = checkTab("prices", R), rulesOk = !re;
-
-  const procedures = P.rows.map(o => ({
-    code: pick(o, "code", "procedure_code", "sku"),
+const COLS = "code, name, category, unit, price, notes, active";
+function normalise(t) {
+  // gviz returns the FIRST tab when the tab name is wrong, so check the headers are ours.
+  if (!t.headers.some(Boolean))
+    throw new Error(`Tab “${CFG.tab}” is empty or missing. Check the tab name matches config.js → tab.`);
+  const missing = [];
+  if (!has(t, "code", "name", "procedure")) missing.push("name");
+  if (!has(t, "price", "base_price", "list_price")) missing.push("price");
+  if (missing.length)
+    throw new Error(`Tab “${CFG.tab}” wasn’t found or has the wrong headers (missing ${missing.join(" and ")}). Check the tab is named “${CFG.tab}” and row 1 reads: ${COLS}.`);
+  const procedures = t.rows.map(o => ({
+    code: pick(o, "code", "procedure_code"),
     name: pick(o, "name", "procedure", "procedure_name"),
     cat: pick(o, "category", "group") || "Other",
-    unit: pick(o, "unit", "uom"),
-    base: num(pick(o, "base_price", "list_price", "price")),
+    unit: pick(o, "unit"),
+    price: num(pick(o, "price", "base_price", "list_price")),
     desc: pick(o, "notes", "description"),
     active: truthy(pick(o, "active"))
   })).filter(p => (p.code || p.name) && p.active);
   procedures.forEach(p => { if (!p.code) p.code = p.name; if (!p.name) p.name = p.code; });
-
-  const customers = C.rows.map(o => {
-    const fx = num(pick(o, "fx_rate", "fx", "rate"));
-    return {
-      id: pick(o, "customer_id", "id"),
-      name: pick(o, "name", "customer_name", "customer"),
-      cur: (pick(o, "currency") || CFG.defaultCurrency).toUpperCase(),
-      disc: pctNum(pick(o, "discount_pct", "discount")) || 0,
-      fx: fx && fx > 0 ? fx : 1,
-      notes: pick(o, "notes"),
-      active: truthy(pick(o, "active"))
-    };
-  }).filter(c => c.id && c.active);
-  customers.forEach(c => { if (!c.name) c.name = c.id; });
-  customers.sort((a, b) => a.name.localeCompare(b.name));
-
-  const idx = {};
-  customers.forEach(c => { idx[c.id.toLowerCase()] = c.id; idx[c.name.toLowerCase()] = c.id; });
-  const rules = rulesOk ? R.rows.map(o => ({
-    cid: idx[pick(o, "customer_id", "customer").toLowerCase()],
-    code: pick(o, "code", "procedure_code").toLowerCase(),
-    cat: pick(o, "category").toLowerCase(),
-    price: num(pick(o, "price", "contract_price")),
-    disc: pctNum(pick(o, "discount_pct", "discount")),
-    from: toDate(pick(o, "valid_from", "from")),
-    to: toDate(pick(o, "valid_to", "to", "expires")),
-    note: pick(o, "notes", "note")
-  })).filter(r => r.cid && (r.code || r.cat) && (r.price != null || r.disc != null))
-     .sort((a, b) => (b.from ? +b.from : 0) - (a.from ? +a.from : 0)) : [];
-
-  return {procedures, customers, rules,
-    warn: rulesOk ? "" : re + " Customer-specific prices are ignored until this is fixed."};
-}
-
-/* Price resolution, most specific wins:
-   1 contract price for this procedure  2 % for this procedure
-   3 % for the procedure's category     4 customer account %   5 list */
-function resolve(c, p) {
-  const cur = c ? c.cur : CFG.defaultCurrency;
-  const list = p.base == null ? null : r2(p.base * (c ? c.fx : 1));
-  const out = (price, label, cls, note) => ({price, list, label, cls, note, cur});
-  if (!c) return out(list, "List", "", "");
-  const t = today();
-  const rs = state.rules.filter(r => r.cid === c.id && (!r.from || r.from <= t) && (!r.to || r.to >= t));
-  const code = p.code.toLowerCase(), cat = p.cat.toLowerCase();
-  const byPrice = rs.find(r => r.code === code && r.price != null);
-  if (byPrice) return out(r2(byPrice.price), "Contract", "b-contract", byPrice.note);
-  const byDisc = rs.find(r => r.code === code && r.disc != null);
-  if (byDisc && list != null) return out(r2(list * (1 - byDisc.disc / 100)), adj(byDisc.disc), byDisc.disc >= 0 ? "b-disc" : "b-up", byDisc.note);
-  const byCat = rs.find(r => !r.code && r.cat === cat && r.disc != null);
-  if (byCat && list != null) return out(r2(list * (1 - byCat.disc / 100)), p.cat + " " + adj(byCat.disc), byCat.disc >= 0 ? "b-disc" : "b-up", byCat.note);
-  if (c.disc && list != null) return out(r2(list * (1 - c.disc / 100)), "Account " + adj(c.disc), c.disc > 0 ? "b-disc" : "b-up", "");
-  return out(list, "List", "", "");
+  return procedures;
 }
 
 /* ---------- state ---------- */
 const state = {
-  procedures: [], customers: [], rules: [], cats: [],
-  customerId: store.get("customer", ""), search: "", cat: "",
-  view: store.get("view", "list"),
-  quote: store.get("quote", {lines: [], vat: null, notes: "", ref: ""}),
-  compareCode: "", mode: "", syncedAt: null, lastTry: 0, loaded: false, error: "", warn: "", loading: false
+  procedures: [], cats: [], search: "", cat: "",
+  view: store.get("view", "list") === "quote" ? "quote" : "list",
+  quote: Object.assign({lines: [], vat: null, notes: "", ref: "", for: ""}, store.get("quote", {})),
+  syncedAt: null, lastTry: 0, loaded: false, error: "", loading: false
 };
-if (pageUrl.searchParams.has("customer")) state.customerId = pageUrl.searchParams.get("customer");
 if (state.quote.vat == null) state.quote.vat = CFG.vatPct;
-const cust = () => state.customers.find(c => c.id.toLowerCase() === String(state.customerId).toLowerCase()) || null;
 const procBy = code => state.procedures.find(p => p.code === code);
 const saveQuote = () => store.set("quote", state.quote);
+const qCount = () => state.quote.lines.reduce((a, l) => a + l.qty, 0);
 
-/* ---------- loading ---------- */
+/* ---------- loading (always live from the sheet; nothing is shown if it can't be read) ---------- */
 async function fetchTab(name) {
   const u = `https://docs.google.com/spreadsheets/d/${encodeURIComponent(CFG.sheetId)}/gviz/tq?tqx=out:csv&headers=1&sheet=${encodeURIComponent(name)}`;
-  const NOT_SHARED = "The Google Sheet isn’t shared publicly. In the sheet: Share → General access → “Anyone with the link” → Viewer.";
   let res;
   // A private sheet redirects to a Google sign-in page, which the browser blocks (CORS) → fetch throws.
   try { res = await fetch(u, {cache: "no-store"}); }
   catch (e) {
-    if (navigator.onLine === false) throw new Error("You’re offline.");
-    // Worked before → most likely a connection problem; never worked → most likely sharing.
-    throw new Error(store.get("cache", null) ? "Couldn’t reach Google Sheets — check your connection. If it keeps happening, check the sheet is still shared “Anyone with the link → Viewer”."
-      : NOT_SHARED + " Also check sheetId in config.js.");
+    throw new Error(navigator.onLine === false ? "You’re offline. Prices will load when you’re back online."
+      : "Couldn’t load the Google Sheet. Check your connection, and that the sheet is shared “Anyone with the link → Viewer”.");
   }
   const text = await res.text();
   if (res.status === 404) throw new Error("Google Sheet not found. Check sheetId in config.js is the long ID from the sheet’s URL.");
-  if (res.status === 401 || res.status === 403 || /^\s*</.test(text)) throw new Error(NOT_SHARED);
-  if (!res.ok) throw new Error(`Google returned an error (HTTP ${res.status}) reading tab “${name}”. Try again shortly.`);
+  if (res.status === 401 || res.status === 403 || /^\s*</.test(text)) throw new Error("The Google Sheet isn’t shared publicly. In the sheet: Share → General access → “Anyone with the link” → Viewer.");
+  if (!res.ok) throw new Error(`Google returned an error (HTTP ${res.status}). Try again shortly.`);
   return table(parseCSV(text));
 }
 
-function setData(raw, mode, at) {
-  const d = normalise(raw);
-  Object.assign(state, {procedures: d.procedures, customers: d.customers, rules: d.rules, warn: d.warn, mode, syncedAt: at || null, loaded: true});
-  state.cats = [...new Set(d.procedures.map(p => p.cat))];
-  if (state.customerId && !cust()) state.customerId = "";
-  if (state.cat && !state.cats.includes(state.cat)) state.cat = "";
-  renderControls(); render();
+function clearData() {
+  Object.assign(state, {procedures: [], cats: [], loaded: false, syncedAt: null});
+  renderChips();
 }
 
 async function load() {
-  if (DEMO) { setData(DEMO_RAW(), "demo"); updateSync(); return; }
-  const cached = store.get("cache", null);
-  if (cached && !state.loaded) { try { setData(cached.raw, "cache", cached.at); } catch (e) {} }
-  state.loading = true; state.lastTry = Date.now(); updateSync();
+  if (!CFG.sheetId) { state.error = "No Google Sheet connected. Put your sheet ID in config.js → sheetId."; clearData(); updateSync(); render(); return; }
+  state.loading = true; state.lastTry = Date.now(); updateSync(); render();
   try {
-    const [p, c, r] = await Promise.all([
-      fetchTab(CFG.tabs.procedures), fetchTab(CFG.tabs.customers), fetchTab(CFG.tabs.prices)
-    ]);
-    const raw = {p, c, r}, at = Date.now();
-    setData(raw, "live", at);
-    store.set("cache", {raw, at});
-    state.error = "";
+    const procedures = normalise(await fetchTab(CFG.tab));
+    Object.assign(state, {procedures, loaded: true, syncedAt: Date.now(), error: ""});
+    state.cats = [...new Set(procedures.map(p => p.cat))];
+    if (state.cat && !state.cats.includes(state.cat)) state.cat = "";
+    renderChips();
   } catch (e) {
-    state.error = e.message;
-    if (state.loaded) state.mode = "cache";
+    state.error = e.message; clearData();
   } finally {
     state.loading = false; updateSync(); render();
   }
 }
 
 function updateSync() {
-  const el = $("#sync"), btn = $("#refresh");
-  btn.classList.toggle("spin", state.loading);
-  el.classList.toggle("off", state.mode === "cache" || !!state.error);
-  el.textContent = state.loading ? "Syncing…" : DEMO ? "Demo" :
-    state.mode === "live" && !state.error ? "Synced " + fmtTime(state.syncedAt) :
-    state.syncedAt ? "Offline copy" : "";
+  const el = $("#sync");
+  $("#refresh").classList.toggle("spin", state.loading);
+  el.classList.toggle("off", !!state.error);
+  el.textContent = state.loading ? "Syncing…" : state.error ? "Not loaded" : state.syncedAt ? "Synced " + fmtTime(state.syncedAt) : "";
 }
 
 /* ---------- rendering ---------- */
-function renderControls() {
-  const sel = $("#customer");
-  sel.innerHTML = `<option value="">List prices (no customer)</option>` +
-    state.customers.map(c => `<option value="${esc(c.id)}">${esc(c.name)}${c.cur !== CFG.defaultCurrency ? " · " + esc(c.cur) : ""}</option>`).join("");
-  sel.value = cust() ? cust().id : "";
+function renderChips() {
   $("#chips").innerHTML = [["", "All"], ...state.cats.map(c => [c, c])]
     .map(([v, l]) => `<button class="chip" data-cat="${esc(v)}" aria-pressed="${state.cat === v}">${esc(l)}</button>`).join("");
 }
@@ -461,83 +332,70 @@ function filtered() {
 
 function render() {
   document.querySelectorAll(".tab").forEach(b => b.setAttribute("aria-selected", b.dataset.view === state.view));
-  $("#qcount").textContent = state.quote.lines.length ? state.quote.lines.reduce((a, l) => a + l.qty, 0) : "";
-  const showFilters = state.view !== "quote";
-  $("#chips").hidden = !showFilters; $(".srch").hidden = !showFilters;
-  let h = "";
-  if (DEMO) h += `<div class="banner">Demo data. Put your Google Sheet ID in <code>config.js</code> to go live.</div>`;
-  if (state.error) h += `<div class="banner err">${esc(state.error)}</div>`;
-  if (state.mode === "cache" && !state.loading) h += `<div class="banner off">Offline copy — prices as last synced ${esc(stamp(state.syncedAt))}. Tap ↻ to try again.</div>`;
-  if (state.warn) h += `<div class="banner">${esc(state.warn)}</div>`;
-  if (!state.loaded) { $("#main").innerHTML = h + (state.error ? "" : `<div class="empty">Loading prices…</div>`); renderSum(); return; }
-  h += state.view === "quote" ? viewQuote() : state.view === "compare" ? viewCompare() : viewList();
+  $("#qcount").textContent = state.loaded && qCount() || "";
+  const showFilters = state.view === "list" && state.loaded;
+  $("#chips").hidden = !showFilters || state.cats.length < 2; $("#filters").hidden = !showFilters;
+  let h = state.error ? `<div class="banner err">${esc(state.error)}</div>` : "";
+  if (!state.loaded) { $("#main").innerHTML = h + (state.loading ? `<div class="empty">Loading prices…</div>` : ""); renderSum(); return; }
+  h += state.view === "quote" ? viewQuote() : viewList();
   $("#main").innerHTML = h;
   renderSum();
 }
 
-function custCard(c) {
-  if (!c) return "";
-  const n = state.rules.filter(r => r.cid === c.id).length;
-  return `<div class="custcard"><b>${esc(c.name)}</b><span>${esc(c.cur)}</span>` +
-    (c.disc ? `<span>Account ${adj(c.disc)}</span>` : "") +
-    (c.fx !== 1 ? `<span>FX ×${c.fx}</span>` : "") +
-    `<span>${n} special price${n === 1 ? "" : "s"}</span>${c.notes ? `<span>${esc(c.notes)}</span>` : ""}</div>`;
-}
-
 function viewList() {
-  const c = cust(), items = filtered();
-  if (!items.length) return custCard(c) + `<div class="empty"><b>No procedures found</b>Try a different search or category.</div>`;
+  const items = filtered();
+  if (!items.length) return state.procedures.length ? `<div class="empty"><b>No procedures found</b>Try a different search or category.</div>`
+    : `<div class="empty"><b>The price list is empty</b>Add rows to the “${esc(CFG.tab)}” tab.</div>`;
   const groups = {};
   items.forEach(p => (groups[p.cat] ||= []).push(p));
-  return custCard(c) + Object.entries(groups).map(([cat, ps]) => `<section class="group"><h3>${esc(cat)}</h3><div class="list">` +
+  return Object.entries(groups).map(([cat, ps]) => `<section class="group"><h3>${esc(cat)}</h3><div class="list">` +
     ps.map(p => {
-      const r = resolve(c, p);
       const inQ = state.quote.lines.find(l => l.code === p.code);
-      const showWas = r.list != null && r.price != null && Math.abs(r.list - r.price) > 0.004;
       return `<div class="row">
-        <div><div class="name">${esc(p.name)}</div><div class="meta">${esc(p.code)}${p.unit ? " · per " + esc(p.unit) : ""}${p.desc ? " · " + esc(p.desc) : ""}${r.note ? " · " + esc(r.note) : ""}</div></div>
-        <div class="price"><div class="now">${money(r.price, r.cur)}</div>${showWas ? `<div class="was">${money(r.list, r.cur)}</div>` : ""}${r.label !== "List" ? `<span class="badge ${r.cls}">${esc(r.label)}</span>` : ""}</div>
-        <button class="add${inQ ? " in" : ""}" data-add="${esc(p.code)}" ${r.price == null ? "disabled" : ""} aria-label="Add ${esc(p.name)} to quote">${inQ ? "×" + inQ.qty : "+"}</button>
+        <div><div class="name">${esc(p.name)}</div><div class="meta">${esc(p.code)}${p.unit ? " · per " + esc(p.unit) : ""}${p.desc ? " · " + esc(p.desc) : ""}</div></div>
+        <div class="price"><div class="now">${money(p.price)}</div></div>
+        <button class="add${inQ ? " in" : ""}" data-add="${esc(p.code)}" aria-label="Add ${esc(p.name)} to quote">${inQ ? "×" + inQ.qty : "+"}</button>
       </div>`;
     }).join("") + `</div></section>`).join("");
 }
 
 function computeQuote() {
-  const c = cust(), cur = c ? c.cur : CFG.defaultCurrency;
   const lines = state.quote.lines.map(l => {
     const p = procBy(l.code);
-    const r = p ? resolve(c, p) : {price: null, label: "Removed", cls: "", list: null};
-    const unit = l.override != null ? l.override : r.price;
-    return {l, p, r, unit, total: unit == null ? 0 : r2(unit * l.qty)};
+    const list = p ? p.price : null;
+    const unit = l.override != null ? l.override : list;
+    return {l, p, list, unit, total: unit == null ? null : r2(unit * l.qty)};
   });
-  const sub = r2(lines.reduce((a, x) => a + x.total, 0));
+  const sub = r2(lines.reduce((a, x) => a + (x.total || 0), 0));
   const vatPct = num(state.quote.vat) || 0;
   const vat = r2(sub * vatPct / 100);
-  return {c, cur, lines, sub, vatPct, vat, total: r2(sub + vat)};
+  return {lines, sub, vatPct, vat, total: r2(sub + vat), poa: lines.some(x => x.unit == null)};
 }
-const autoRef = () => { const d = new Date(); const c = cust(); return "Q-" + d.getFullYear() + String(d.getMonth()+1).padStart(2,"0") + String(d.getDate()).padStart(2,"0") + (c ? "-" + c.id.toUpperCase().replace(/[^A-Z0-9]/g, "") : ""); };
+const basis = x => x.l.override != null ? "Manual" : x.unit == null ? "POA" : "";
+const autoRef = () => { const d = new Date(); return "Q-" + d.getFullYear() + String(d.getMonth()+1).padStart(2,"0") + String(d.getDate()).padStart(2,"0"); };
 const validUntil = () => { const d = today(); d.setDate(d.getDate() + (+CFG.quoteValidityDays || 30)); return d; };
 
 function viewQuote() {
   const q = computeQuote();
   if (!q.lines.length) return `<div class="empty"><b>No items yet</b>Tap + on the Prices tab to add procedures.</div>`;
-  return custCard(q.c) + `
+  return `
   <div class="list">${q.lines.map(x => `
     <div class="qline" data-line="${esc(x.l.code)}">
       <div class="qtop"><div class="info"><div class="name">${esc(x.p ? x.p.name : x.l.code)}</div>
-        <div class="meta">${esc(x.l.code)}${x.p && x.p.unit ? " · per " + esc(x.p.unit) : ""}<span class="badge src ${x.l.override != null ? "man" : esc(x.r.cls)}">${x.l.override != null ? "Manual" : esc(x.r.label)}</span></div></div>
+        <div class="meta">${esc(x.l.code)}${x.p && x.p.unit ? " · per " + esc(x.p.unit) : ""}${x.p ? "" : " · no longer in price list"}<span class="badge src${x.l.override != null ? " man" : ""}"${basis(x) ? "" : " hidden"}>${basis(x)}</span></div></div>
         <button class="rm" data-rm="${esc(x.l.code)}" aria-label="Remove">×</button></div>
       <div class="qbot">
         <div class="qty"><button data-dec="${esc(x.l.code)}" aria-label="Less">−</button><input type="number" inputmode="numeric" min="1" data-qty="${esc(x.l.code)}" value="${x.l.qty}" aria-label="Quantity"><button data-inc="${esc(x.l.code)}" aria-label="More">+</button></div>
         <div class="unit">
-          <input type="number" inputmode="decimal" step="0.01" data-ov="${esc(x.l.code)}" value="${x.l.override ?? ""}" placeholder="${x.r.price == null ? "POA" : x.r.price.toFixed(2)}" aria-label="Unit price"></div>
-        <div class="ltot" data-ltot="${esc(x.l.code)}">${money(x.total, q.cur)}</div>
+          <input type="number" inputmode="decimal" step="0.01" data-ov="${esc(x.l.code)}" value="${x.l.override ?? ""}" placeholder="${x.list == null ? "Price" : x.list.toFixed(2)}" aria-label="Unit price"></div>
+        <div class="ltot" data-ltot="${esc(x.l.code)}">${money(x.total)}</div>
       </div>
     </div>`).join("")}</div>
   <div class="totals">
-    <div><span>Subtotal</span><span id="t-sub">${money(q.sub, q.cur)}</span></div>
-    <div><span>VAT <span id="t-vp">${q.vatPct}</span>%</span><span id="t-vat">${money(q.vat, q.cur)}</span></div>
-    <div class="grand"><span>Total</span><span id="t-tot">${money(q.total, q.cur)}</span></div>
+    <div><span>Subtotal</span><span id="t-sub">${money(q.sub)}</span></div>
+    <div><span>VAT <span id="t-vp">${q.vatPct}</span>%</span><span id="t-vat">${money(q.vat)}</span></div>
+    <div class="grand"><span>Total</span><span id="t-tot">${money(q.total)}</span></div>
+    <div class="poa" id="t-poa"${q.poa ? "" : " hidden"}>Excludes POA items — type a unit price to include them.</div>
   </div>
   <div class="actions">
     <button class="btn primary" data-act="share">Share</button>
@@ -547,6 +405,7 @@ function viewQuote() {
   </div>
   <div style="margin-top:18px">
     <div class="qfields">
+      <div class="full"><label class="lbl" for="q-for">Prepared for</label><input type="text" id="q-for" value="${esc(state.quote.for)}" placeholder="Patient or company name" autocomplete="off"></div>
       <div><label class="lbl" for="q-ref">Reference</label><input type="text" id="q-ref" value="${esc(state.quote.ref)}" placeholder="${esc(autoRef())}"></div>
       <div><label class="lbl" for="q-vat">VAT %</label><input type="number" inputmode="decimal" id="q-vat" value="${esc(state.quote.vat)}"></div>
       <div class="full"><label class="lbl" for="q-notes">Notes on quote</label><textarea id="q-notes" placeholder="Scope, assumptions, payment terms…">${esc(state.quote.notes)}</textarea></div>
@@ -558,13 +417,14 @@ function viewQuote() {
 function updateQuoteNumbers() {
   const q = computeQuote();
   q.lines.forEach(x => {
-    const el = document.querySelector(`[data-ltot="${CSS.escape(x.l.code)}"]`); if (el) el.textContent = money(x.total, q.cur);
+    const el = document.querySelector(`[data-ltot="${CSS.escape(x.l.code)}"]`); if (el) el.textContent = money(x.total);
     const src = document.querySelector(`[data-line="${CSS.escape(x.l.code)}"] .src`);
-    if (src) { src.textContent = x.l.override != null ? "Manual" : x.r.label; src.className = "badge src " + (x.l.override != null ? "man" : x.r.cls); }
+    if (src) { src.textContent = basis(x); src.hidden = !basis(x); src.classList.toggle("man", x.l.override != null); }
   });
   const s = (id, v) => { const el = $(id); if (el) el.textContent = v; };
-  s("#t-sub", money(q.sub, q.cur)); s("#t-vp", q.vatPct); s("#t-vat", money(q.vat, q.cur)); s("#t-tot", money(q.total, q.cur));
-  $("#qcount").textContent = state.quote.lines.length ? state.quote.lines.reduce((a, l) => a + l.qty, 0) : "";
+  s("#t-sub", money(q.sub)); s("#t-vp", q.vatPct); s("#t-vat", money(q.vat)); s("#t-tot", money(q.total));
+  const poa = $("#t-poa"); if (poa) poa.hidden = !q.poa;
+  $("#qcount").textContent = qCount() || "";
   renderSum();
 }
 
@@ -573,40 +433,18 @@ function renderSum() {
   const show = state.loaded && state.view === "list" && state.quote.lines.length > 0;
   el.hidden = !show; $("#main").classList.toggle("has-sum", show);
   if (!show) return;
-  const q = computeQuote(), n = state.quote.lines.reduce((a, l) => a + l.qty, 0);
-  el.innerHTML = `<div class="sum-in"><div class="t"><small>${n} item${n === 1 ? "" : "s"} · ${q.vatPct ? "incl. VAT" : "total"}</small><b>${money(q.total, q.cur)}</b></div><button data-go="quote">View quote</button></div>`;
-}
-
-function viewCompare() {
-  const items = filtered();
-  if (!items.length) return `<div class="empty"><b>No procedures found</b></div>`;
-  if (!items.some(p => p.code === state.compareCode)) state.compareCode = items[0].code;
-  const p = procBy(state.compareCode);
-  const rows = state.customers.map(c => ({c, r: resolve(c, p)}));
-  const vals = rows.map(x => x.r.price != null ? x.r.price / x.c.fx : null).filter(v => v != null);
-  const max = Math.max(...vals, p.base || 0) || 1;
-  rows.sort((a, b) => ((a.r.price ?? Infinity) / a.c.fx) - ((b.r.price ?? Infinity) / b.c.fx));
-  return `<div class="cmp-pick"><select id="cmp" aria-label="Procedure">${items.map(x => `<option value="${esc(x.code)}"${x.code === p.code ? " selected" : ""}>${esc(x.name)}</option>`).join("")}</select></div>
-  <div class="custcard"><span>List ${money(p.base, CFG.defaultCurrency)}${p.unit ? " per " + esc(p.unit) : ""}</span><span>Cheapest first · bars in ${esc(CFG.defaultCurrency)}</span></div>
-  <div class="list">${rows.map(({c, r}) => {
-    const w = r.price == null ? 0 : Math.max(2, Math.round((r.price / c.fx) / max * 100));
-    return `<button class="crow${cust() && cust().id === c.id ? " sel" : ""}" data-pickcust="${esc(c.id)}">
-      <div><div class="name">${esc(c.name)}</div>${r.label !== "List" ? `<span class="badge ${r.cls}">${esc(r.label)}</span>` : `<span class="badge">List</span>`}</div>
-      <div class="price"><div class="now">${money(r.price, r.cur)}</div>${c.cur !== CFG.defaultCurrency && r.price != null ? `<div class="meta">≈ ${money(r2(r.price / c.fx), CFG.defaultCurrency)}</div>` : ""}</div>
-      <div class="bar-wrap"><div class="bar-fill" style="width:${w}%"></div></div>
-    </button>`;
-  }).join("")}</div>
-  <p class="meta" style="margin:10px 4px">Tap a customer to open their price list.</p>`;
+  const q = computeQuote(), n = qCount();
+  el.innerHTML = `<div class="sum-in"><div class="t"><small>${n} item${n === 1 ? "" : "s"} · ${q.vatPct ? "incl. VAT" : "total"}</small><b>${money(q.total)}</b></div><button data-go="quote">View quote</button></div>`;
 }
 
 /* ---------- quote outputs ---------- */
 function quoteText() {
-  const q = computeQuote(), ref = state.quote.ref || autoRef();
-  const L = [`Quote ${ref}${q.c ? " — " + q.c.name : ""}`, `${fmtDate(new Date())} · valid until ${fmtDate(validUntil())}`, ""];
-  q.lines.forEach(x => L.push(`${x.l.qty} × ${x.p ? x.p.name : x.l.code} (${x.l.code}) @ ${money(x.unit, q.cur)} = ${money(x.total, q.cur)}`));
-  L.push("", `Subtotal: ${money(q.sub, q.cur)}`);
-  if (q.vatPct) L.push(`VAT ${q.vatPct}%: ${money(q.vat, q.cur)}`);
-  L.push(`Total: ${money(q.total, q.cur)}`);
+  const q = computeQuote(), ref = state.quote.ref || autoRef(), who = state.quote.for.trim();
+  const L = [`Quote ${ref}${who ? " — " + who : ""}`, `${fmtDate(new Date())} · valid until ${fmtDate(validUntil())}`, ""];
+  q.lines.forEach(x => L.push(`${x.l.qty} × ${x.p ? x.p.name : x.l.code} (${x.l.code}) @ ${money(x.unit)}${x.total == null ? "" : " = " + money(x.total)}`));
+  L.push("", `Subtotal: ${money(q.sub)}`);
+  if (q.vatPct) L.push(`VAT ${q.vatPct}%: ${money(q.vat)}`);
+  L.push(`Total: ${money(q.total)}${q.poa ? " (excluding POA items)" : ""}`);
   if (state.quote.notes.trim()) L.push("", state.quote.notes.trim());
   if (CFG.companyName) L.push("", CFG.companyName);
   return L.join("\n");
@@ -620,28 +458,28 @@ async function shareQuote() {
 function downloadCSV() {
   const q = computeQuote(), ref = state.quote.ref || autoRef();
   const cell = v => `"${String(v ?? "").replace(/"/g, '""')}"`;
-  const rows = [["Reference", "Customer", "Code", "Procedure", "Qty", "Unit price", "Line total", "Currency", "Price basis"]];
-  q.lines.forEach(x => rows.push([ref, q.c ? q.c.name : "", x.l.code, x.p ? x.p.name : "", x.l.qty, x.unit ?? "", x.total, q.cur, x.l.override != null ? "Manual" : x.r.label]));
-  rows.push([], ["", "", "", "Subtotal", "", "", q.sub, q.cur], ["", "", "", `VAT ${q.vatPct}%`, "", "", q.vat, q.cur], ["", "", "", "Total", "", "", q.total, q.cur]);
-  const blob = new Blob(["\ufeff" + rows.map(r => r.map(cell).join(",")).join("\r\n")], {type: "text/csv"});
+  const rows = [["Reference", "Prepared for", "Code", "Procedure", "Qty", "Unit price", "Line total", "Currency", "Note"]];
+  q.lines.forEach(x => rows.push([ref, state.quote.for, x.l.code, x.p ? x.p.name : "", x.l.qty, x.unit ?? "POA", x.total ?? "", CFG.currency, basis(x)]));
+  rows.push([], ["", "", "", "Subtotal", "", "", q.sub, CFG.currency], ["", "", "", `VAT ${q.vatPct}%`, "", "", q.vat, CFG.currency], ["", "", "", "Total", "", "", q.total, CFG.currency]);
+  const blob = new Blob(["﻿" + rows.map(r => r.map(cell).join(",")).join("\r\n")], {type: "text/csv"});
   const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = ref + ".csv"; a.click();
   setTimeout(() => URL.revokeObjectURL(a.href), 2000);
 }
 function buildPrint() {
-  const q = computeQuote(), ref = state.quote.ref || autoRef();
-  if (!q.lines.length) { $("#printArea").innerHTML = ""; return; }
+  const q = computeQuote(), ref = state.quote.ref || autoRef(), who = state.quote.for.trim();
+  if (!state.loaded || !q.lines.length) { $("#printArea").innerHTML = ""; return; }
   $("#printArea").innerHTML = `
     <div class="p-head"><div><h1>Quotation</h1><div>${esc(CFG.companyName)}</div></div>
       <div class="p-meta">Ref <b>${esc(ref)}</b><br>Date ${fmtDate(new Date())}<br>Valid until ${fmtDate(validUntil())}</div></div>
-    ${q.c ? `<div class="p-to">Prepared for <b>${esc(q.c.name)}</b></div>` : ""}
+    ${who ? `<div class="p-to">Prepared for <b>${esc(who)}</b></div>` : ""}
     <table><thead><tr><th>Code</th><th>Procedure</th><th class="n">Qty</th><th class="n">Unit price</th><th class="n">Total</th></tr></thead><tbody>
-    ${q.lines.map(x => `<tr><td>${esc(x.l.code)}</td><td>${esc(x.p ? x.p.name : "")}${x.p && x.p.unit ? `<br><small>per ${esc(x.p.unit)}</small>` : ""}</td><td class="n">${x.l.qty}</td><td class="n">${money(x.unit, q.cur)}</td><td class="n">${money(x.total, q.cur)}</td></tr>`).join("")}
+    ${q.lines.map(x => `<tr><td>${esc(x.l.code)}</td><td>${esc(x.p ? x.p.name : "")}${x.p && x.p.unit ? `<br><small>per ${esc(x.p.unit)}</small>` : ""}</td><td class="n">${x.l.qty}</td><td class="n">${money(x.unit)}</td><td class="n">${x.total == null ? "POA" : money(x.total)}</td></tr>`).join("")}
     </tbody></table>
-    <div class="p-tot"><div><span>Subtotal</span><span>${money(q.sub, q.cur)}</span></div>
-    ${q.vatPct ? `<div><span>VAT ${q.vatPct}%</span><span>${money(q.vat, q.cur)}</span></div>` : ""}
-    <div class="g"><span>Total</span><span>${money(q.total, q.cur)}</span></div></div>
+    <div class="p-tot"><div><span>Subtotal</span><span>${money(q.sub)}</span></div>
+    ${q.vatPct ? `<div><span>VAT ${q.vatPct}%</span><span>${money(q.vat)}</span></div>` : ""}
+    <div class="g"><span>Total</span><span>${money(q.total)}</span></div></div>
     ${state.quote.notes.trim() ? `<div class="p-notes">${esc(state.quote.notes.trim())}</div>` : ""}
-    <div class="p-foot">All prices in ${esc(q.cur)}.${CFG.companyName ? " " + esc(CFG.companyName) + "." : ""}</div>`;
+    <div class="p-foot">All prices in ${esc(CFG.currency)}.${q.poa ? " POA items are priced on application and not included in the total." : ""}${CFG.companyName ? " " + esc(CFG.companyName) + "." : ""}</div>`;
 }
 function printQuote() { buildPrint(); setTimeout(() => window.print(), 50); }
 window.addEventListener("beforeprint", buildPrint);
@@ -650,88 +488,48 @@ window.addEventListener("beforeprint", buildPrint);
 function setView(v) { state.view = v; store.set("view", v); render(); window.scrollTo(0, 0); }
 document.querySelector("nav.bottom").addEventListener("click", e => { const b = e.target.closest(".tab"); if (b) setView(b.dataset.view); });
 $("#refresh").addEventListener("click", () => { if (!state.loading) load(); });
-$("#customer").addEventListener("change", e => {
-  state.customerId = e.target.value; store.set("customer", state.customerId);
-  const u = new URL(location.href); state.customerId ? u.searchParams.set("customer", state.customerId) : u.searchParams.delete("customer");
-  history.replaceState(null, "", u); render();
-});
 $("#search").addEventListener("input", e => { state.search = e.target.value; render(); });
 $("#chips").addEventListener("click", e => {
   const b = e.target.closest(".chip"); if (!b) return;
   state.cat = b.dataset.cat; document.querySelectorAll(".chip").forEach(x => x.setAttribute("aria-pressed", x === b)); render();
 });
 document.addEventListener("click", e => {
-  const t = e.target.closest("[data-add],[data-inc],[data-dec],[data-rm],[data-act],[data-go],[data-pickcust]"); if (!t) return;
+  const t = e.target.closest("[data-add],[data-inc],[data-dec],[data-rm],[data-act],[data-go]"); if (!t) return;
   const d = t.dataset, lines = state.quote.lines;
   if (d.add) { const l = lines.find(x => x.code === d.add); l ? l.qty++ : lines.push({code: d.add, qty: 1, override: null}); saveQuote(); buzz(); toast("Added to quote"); render(); }
   else if (d.inc || d.dec) { const l = lines.find(x => x.code === (d.inc || d.dec)); if (l) { l.qty = Math.max(1, l.qty + (d.inc ? 1 : -1)); saveQuote(); const i = document.querySelector(`[data-qty="${CSS.escape(l.code)}"]`); if (i) i.value = l.qty; updateQuoteNumbers(); } }
   else if (d.rm) { state.quote.lines = lines.filter(x => x.code !== d.rm); saveQuote(); render(); }
   else if (d.go) setView(d.go);
-  else if (d.pickcust) { const s = $("#customer"); s.value = d.pickcust; s.dispatchEvent(new Event("change")); setView("list"); }
   else if (d.act === "share") shareQuote();
   else if (d.act === "print") printQuote();
   else if (d.act === "csv") downloadCSV();
-  else if (d.act === "clear" && confirm("Clear this quote?")) { state.quote = {lines: [], vat: CFG.vatPct, notes: "", ref: ""}; saveQuote(); render(); }
+  else if (d.act === "clear" && confirm("Clear this quote?")) { state.quote = {lines: [], vat: CFG.vatPct, notes: "", ref: "", for: ""}; saveQuote(); render(); }
 });
 $("#main").addEventListener("input", e => {
   const t = e.target, d = t.dataset;
   if (d.qty) { const l = state.quote.lines.find(x => x.code === d.qty); const n = parseInt(t.value, 10); if (l && n > 0) l.qty = n; }
-  else if (d.ov !== undefined && t.matches("[data-ov]")) { const l = state.quote.lines.find(x => x.code === d.ov); if (l) l.override = t.value === "" ? null : num(t.value); }
+  else if (t.matches("[data-ov]")) { const l = state.quote.lines.find(x => x.code === d.ov); if (l) l.override = t.value === "" ? null : num(t.value); }
   else if (t.id === "q-vat") state.quote.vat = t.value;
   else if (t.id === "q-ref") state.quote.ref = t.value.trim();
+  else if (t.id === "q-for") state.quote.for = t.value;
   else if (t.id === "q-notes") state.quote.notes = t.value;
   else return;
   saveQuote(); updateQuoteNumbers();
 });
 $("#main").addEventListener("change", e => {
-  if (e.target.id === "cmp") { state.compareCode = e.target.value; render(); }
   if (e.target.dataset.qty) { const l = state.quote.lines.find(x => x.code === e.target.dataset.qty); if (l) e.target.value = l.qty; }
 });
+// Reopened after 5+ minutes → refresh prices.
 document.addEventListener("visibilitychange", () => {
-  if (document.visibilityState === "visible" && !DEMO && !state.loading && Date.now() - state.lastTry > 5 * 60e3) load();
+  if (document.visibilityState === "visible" && !state.loading && Date.now() - state.lastTry > 5 * 60e3) load();
 });
+window.addEventListener("online", () => { if (!state.loaded && !state.loading) load(); });
 
 /* ---------- boot ---------- */
 document.title = CFG.title; $("#brand").textContent = CFG.title;
-if (!DEMO) { const a = $("#openSheet"); a.href = `https://docs.google.com/spreadsheets/d/${encodeURIComponent(CFG.sheetId)}/edit`; a.hidden = false; }
+if (CFG.sheetId) { const a = $("#openSheet"); a.href = `https://docs.google.com/spreadsheets/d/${encodeURIComponent(CFG.sheetId)}/edit`; a.hidden = false; }
 if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) navigator.serviceWorker.register("sw.js").catch(() => {});
 render(); load();
-
-/* ---------- demo data (used only when sheetId is empty) ---------- */
-function DEMO_RAW() {
-  const t = csv => table(parseCSV(csv));
-  return {
-    p: t(`code,name,category,unit,base_price,notes,active
-INS-01,Standard device installation,Installation,device,180,,TRUE
-INS-02,Multi-door cooler installation,Installation,cooler,260,,TRUE
-INS-03,Device reinstall / relocation,Installation,device,140,,TRUE
-MNT-01,Battery replacement,Maintenance,device,95,Parts included,TRUE
-MNT-02,Camera recalibration,Maintenance,device,75,,TRUE
-MNT-03,Connectivity check & SIM swap,Maintenance,visit,85,,TRUE
-MNT-04,Emergency call-out (24h),Maintenance,visit,220,,TRUE
-REM-01,Remote diagnostics,Remote,device/month,4.5,,TRUE
-REM-02,Planogram setup,Remote,cooler,35,,TRUE
-REM-03,Monthly health report,Remote,account/month,150,,TRUE
-CON-01,Site survey,Consulting,site,300,,TRUE
-CON-02,Training session (half day),Consulting,session,450,,TRUE
-CON-03,Custom integration,Consulting,project,,Price on application,TRUE`),
-    c: t(`customer_id,name,currency,discount_pct,fx_rate,notes,active
-NWF,Northwind Foods,GBP,0,1,,TRUE
-CTB,Contoso Beverages,GBP,10,1,Volume tier,TRUE
-FBD,Fabrikam Dairy,EUR,5,1.17,,TRUE
-ADG,Adatum Gulf Trading,AED,0,4.95,,TRUE`),
-    r: t(`customer_id,code,category,price,discount_pct,valid_from,valid_to,notes
-CTB,INS-01,,150,,,,Framework contract
-CTB,,Remote,,20,,,Remote bundle
-CTB,MNT-02,,,15%,,,Recalibration deal
-NWF,,Maintenance,,30,2025-01-01,31/12/2025,Expired promo (ignored)
-FBD,MNT-01,,99,,,,
-FBD,,Installation,,12,2026-01-01,2026-12-31,2026 rollout deal
-ADG,,Remote,,-8,,,Regional surcharge
-ADG,CON-03,,6500,,,,Agreed scope
-NWF,MNT-04,,195,,,,`)
-  };
-}
 })();
 </script>
 </body>
