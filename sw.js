@@ -1,5 +1,5 @@
 // Keeps the app shell available offline. Prices are cached separately by the page.
-const CACHE = "pricing-shell-v6";
+const CACHE = "pricing-shell-v7";
 const SHELL = ["./", "index.html", "config.js", "manifest.webmanifest", "icon.svg", "icon-180.png", "icon-512.png"];
 
 self.addEventListener("install", e => {

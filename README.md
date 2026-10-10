@@ -31,9 +31,9 @@ tab: "Procedures",
 title: "MT Clinic", subtitle: "Nursing Care",          // app header + quote header
 companyName: "MT Clinic", contactName: "Ramzi Hashem · Registered Nurse",
 phone: "03 894 380 · 71 466 324", instagram: "@m.t.clinic_", // quote footer + shared text
-currency: "USD", locale: "en-US", vatPct: 0, quoteValidityDays: 30
+currency: "USD", locale: "en-US", quoteValidityDays: 30
 ```
-With `vatPct: 0` the VAT line is hidden; you can still type a VAT % on an individual quote. Names and notes in the sheet can be Arabic or English.
+Quotes show a single total (no VAT). Names and notes in the sheet can be Arabic or English.
 
 ### 3. GitHub Pages
 **Settings → Pages → Deploy from a branch →** pick the branch and `(root)` → Save. The site appears at `https://OWNER.github.io/REPO/` after a minute or two.
@@ -44,7 +44,7 @@ With `vatPct: 0` the VAT line is hidden; you can still type a VAT % on an indivi
 
 ## Using it
 - **Prices** — search, or tap a category. Tap **+** to add to the quote; a bar above the tabs shows the running total.
-- **Quote** — −/+ quantity, type a unit price to override it for this quote only (marked *Manual*; also how you price POA items). Fill in *Prepared for*, reference (auto `Q-YYYYMMDD`), VAT % and notes. **Share** opens your phone's share sheet (or copies the text), **PDF / Print** prints a clean quotation (choose *Save as PDF*), **CSV** downloads for Excel, **Clear** empties it. The quote is kept on the device.
+- **Quote** — −/+ quantity, type a unit price to override it for this quote only (marked *Manual*; also how you price POA items). Fill in *Prepared for*, reference (auto `Q-YYYYMMDD`) and notes. **Share** opens your phone's share sheet (or copies the text), **PDF / Print** prints a clean quotation (choose *Save as PDF*), **CSV** downloads for Excel, **Clear** empties it. The quote is kept on the device.
 - **Refresh** — ↻ reloads the sheet; it also reloads when you reopen the app after 5+ minutes.
 
 ## Privacy — read this

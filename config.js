@@ -16,6 +16,5 @@ window.PRICING_CONFIG = {
 
   currency: "USD",                  // currency of the prices in the sheet (e.g. USD, LBP)
   locale: "en-US",                  // number and date formatting
-  vatPct: 0,                        // default VAT % on quotes (0 = no VAT line)
   quoteValidityDays: 30
 };

@@ -104,6 +104,7 @@ input:focus,textarea:focus{border-color:var(--accent)}
 .totals{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:12px 14px;margin-top:12px;font-variant-numeric:tabular-nums}
 .totals div{display:flex;justify-content:space-between;padding:3px 0;color:var(--muted)}
 .totals .grand{border-top:1px solid var(--line);margin-top:6px;padding-top:9px;font-weight:700;font-size:19px;color:var(--ink)}
+.totals .grand:first-child{border-top:0;margin-top:0;padding-top:3px}
 .totals .poa{font-size:13px;color:var(--up)}
 .actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
 .btn{border:1px solid var(--line);background:var(--card);border-radius:12px;height:48px;padding:0 14px;font-weight:600;font-size:15px;display:flex;align-items:center;justify-content:center;gap:8px}
@@ -195,7 +196,7 @@ nav.bottom .in{max-width:760px;margin:0 auto;display:grid;grid-template-columns:
 
 /* ---------- config ---------- */
 const USER = window.PRICING_CONFIG || {};
-const CFG = Object.assign({sheetId:"", title:"MT Clinic", subtitle:"", companyName:"", contactName:"", phone:"", instagram:"", locale:"en-GB", vatPct:0, quoteValidityDays:30}, USER);
+const CFG = Object.assign({sheetId:"", title:"MT Clinic", subtitle:"", companyName:"", contactName:"", phone:"", instagram:"", locale:"en-GB", quoteValidityDays:30}, USER);
 CFG.currency = String(USER.currency || USER.defaultCurrency || "GBP").toUpperCase();
 CFG.tab = USER.tab || (USER.tabs && USER.tabs.procedures) || "Procedures";
 const pageUrl = new URL(location.href);
@@ -276,10 +277,10 @@ function normalise(t) {
 const state = {
   procedures: [], cats: [], search: "", cat: "",
   view: store.get("view", "list") === "quote" ? "quote" : "list",
-  quote: Object.assign({lines: [], vat: null, notes: "", ref: "", for: ""}, store.get("quote", {})),
+  quote: Object.assign({lines: [], notes: "", ref: "", for: ""}, store.get("quote", {})),
   syncedAt: null, lastTry: 0, loaded: false, error: "", loading: false
 };
-if (state.quote.vat == null) state.quote.vat = CFG.vatPct;
+delete state.quote.vat; // older saved quotes had a VAT %; VAT is no longer used
 const procBy = code => state.procedures.find(p => p.code === code);
 const saveQuote = () => store.set("quote", state.quote);
 const qCount = () => state.quote.lines.reduce((a, l) => a + l.qty, 0);
@@ -377,10 +378,7 @@ function computeQuote() {
     const unit = l.override != null ? l.override : list;
     return {l, p, list, unit, total: unit == null ? null : r2(unit * l.qty)};
   });
-  const sub = r2(lines.reduce((a, x) => a + (x.total || 0), 0));
-  const vatPct = num(state.quote.vat) || 0;
-  const vat = r2(sub * vatPct / 100);
-  return {lines, sub, vatPct, vat, total: r2(sub + vat), poa: lines.some(x => x.unit == null)};
+  return {lines, total: r2(lines.reduce((a, x) => a + (x.total || 0), 0)), poa: lines.some(x => x.unit == null)};
 }
 const basis = x => x.l.override != null ? "Manual" : x.unit == null ? "POA" : "";
 const autoRef = () => { const d = new Date(); return "Q-" + d.getFullYear() + String(d.getMonth()+1).padStart(2,"0") + String(d.getDate()).padStart(2,"0"); };
@@ -403,8 +401,6 @@ function viewQuote() {
       </div>
     </div>`).join("")}</div>
   <div class="totals">
-    <div><span>Subtotal</span><span id="t-sub">${money(q.sub)}</span></div>
-    <div id="t-vrow"${q.vatPct ? "" : " hidden"}><span>VAT <span id="t-vp">${q.vatPct}</span>%</span><span id="t-vat">${money(q.vat)}</span></div>
     <div class="grand"><span>Total</span><span id="t-tot">${money(q.total)}</span></div>
     <div class="poa" id="t-poa"${q.poa ? "" : " hidden"}>Excludes POA items — type a unit price to include them.</div>
   </div>
@@ -417,8 +413,7 @@ function viewQuote() {
   <div style="margin-top:18px">
     <div class="qfields">
       <div class="full"><label class="lbl" for="q-for">Prepared for</label><input type="text" id="q-for" value="${esc(state.quote.for)}" placeholder="Patient or company name" autocomplete="off"></div>
-      <div><label class="lbl" for="q-ref">Reference</label><input type="text" id="q-ref" value="${esc(state.quote.ref)}" placeholder="${esc(autoRef())}"></div>
-      <div><label class="lbl" for="q-vat">VAT %</label><input type="number" inputmode="decimal" id="q-vat" value="${esc(state.quote.vat)}"></div>
+      <div class="full"><label class="lbl" for="q-ref">Reference</label><input type="text" id="q-ref" value="${esc(state.quote.ref)}" placeholder="${esc(autoRef())}"></div>
       <div class="full"><label class="lbl" for="q-notes">Notes on quote</label><textarea id="q-notes" placeholder="Scope, assumptions, payment terms…">${esc(state.quote.notes)}</textarea></div>
     </div>
     <div class="meta">Valid until ${fmtDate(validUntil())}. Type in a unit price to override it for this quote only.</div>
@@ -433,9 +428,8 @@ function updateQuoteNumbers() {
     if (src) { src.textContent = basis(x); src.hidden = !basis(x); src.classList.toggle("man", x.l.override != null); }
   });
   const s = (id, v) => { const el = $(id); if (el) el.textContent = v; };
-  s("#t-sub", money(q.sub)); s("#t-vp", q.vatPct); s("#t-vat", money(q.vat)); s("#t-tot", money(q.total));
+  s("#t-tot", money(q.total));
   const poa = $("#t-poa"); if (poa) poa.hidden = !q.poa;
-  const vr = $("#t-vrow"); if (vr) vr.hidden = !q.vatPct;
   $("#qcount").textContent = qCount() || "";
   renderSum();
 }
@@ -455,7 +449,7 @@ function renderSum() {
   if (!show) return;
   const q = computeQuote(), n = qCount();
   requestAnimationFrame(measureBars);
-  el.innerHTML = `<div class="sum-in"><div class="t"><small>${n} item${n === 1 ? "" : "s"} · ${q.vatPct ? "incl. VAT" : "total"}</small><b>${money(q.total)}</b></div><button data-go="quote">View quote</button></div>`;
+  el.innerHTML = `<div class="sum-in"><div class="t"><small>${n} item${n === 1 ? "" : "s"} · total</small><b>${money(q.total)}</b></div><button data-go="quote">View quote</button></div>`;
 }
 
 /* ---------- quote outputs ---------- */
@@ -463,9 +457,7 @@ function quoteText() {
   const q = computeQuote(), ref = state.quote.ref || autoRef(), who = state.quote.for.trim();
   const L = [`Quote ${ref}${who ? " — " + who : ""}`, `${fmtDate(new Date())} · valid until ${fmtDate(validUntil())}`, ""];
   q.lines.forEach(x => L.push(`${x.l.qty} × ${x.p ? x.p.name : x.l.code} (${x.l.code}) @ ${money(x.unit)}${x.total == null ? "" : " = " + money(x.total)}`));
-  L.push("", `Subtotal: ${money(q.sub)}`);
-  if (q.vatPct) L.push(`VAT ${q.vatPct}%: ${money(q.vat)}`);
-  L.push(`Total: ${money(q.total)}${q.poa ? " (excluding POA items)" : ""}`);
+  L.push("", `Total: ${money(q.total)}${q.poa ? " (excluding POA items)" : ""}`);
   if (state.quote.notes.trim()) L.push("", state.quote.notes.trim());
   L.push("", ...[CFG.companyName, CFG.contactName, CFG.phone && "Tel " + CFG.phone, CFG.instagram && "Instagram " + CFG.instagram].filter(Boolean));
   return L.join("\n");
@@ -481,7 +473,7 @@ function downloadCSV() {
   const cell = v => `"${String(v ?? "").replace(/"/g, '""')}"`;
   const rows = [["Reference", "Prepared for", "Code", "Procedure", "Qty", "Unit price", "Line total", "Currency", "Note"]];
   q.lines.forEach(x => rows.push([ref, state.quote.for, x.l.code, x.p ? x.p.name : "", x.l.qty, x.unit ?? "POA", x.total ?? "", CFG.currency, basis(x)]));
-  rows.push([], ["", "", "", "Subtotal", "", "", q.sub, CFG.currency], ["", "", "", `VAT ${q.vatPct}%`, "", "", q.vat, CFG.currency], ["", "", "", "Total", "", "", q.total, CFG.currency]);
+  rows.push([], ["", "", "", "Total", "", "", q.total, CFG.currency]);
   const blob = new Blob(["﻿" + rows.map(r => r.map(cell).join(",")).join("\r\n")], {type: "text/csv"});
   const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = ref + ".csv"; a.click();
   setTimeout(() => URL.revokeObjectURL(a.href), 2000);
@@ -497,9 +489,7 @@ function buildPrint() {
     <table><thead><tr><th>Code</th><th>Procedure</th><th class="n">Qty</th><th class="n">Unit price</th><th class="n">Total</th></tr></thead><tbody>
     ${q.lines.map(x => `<tr><td>${esc(x.l.code)}</td><td>${esc(x.p ? x.p.name : "")}${x.p && x.p.unit ? `<br><small>per ${esc(x.p.unit)}</small>` : ""}</td><td class="n">${x.l.qty}</td><td class="n">${money(x.unit)}</td><td class="n">${x.total == null ? "POA" : money(x.total)}</td></tr>`).join("")}
     </tbody></table>
-    <div class="p-tot"><div><span>Subtotal</span><span>${money(q.sub)}</span></div>
-    ${q.vatPct ? `<div><span>VAT ${q.vatPct}%</span><span>${money(q.vat)}</span></div>` : ""}
-    <div class="g"><span>Total</span><span>${money(q.total)}</span></div></div>
+    <div class="p-tot"><div class="g"><span>Total</span><span>${money(q.total)}</span></div></div>
     ${state.quote.notes.trim() ? `<div class="p-notes">${esc(state.quote.notes.trim())}</div>` : ""}
     <div class="p-foot">All prices in ${esc(CFG.currency)}.${q.poa ? " POA items are priced on application and not included in the total." : ""}<br>
       ${[CFG.companyName && `<b>${esc(CFG.companyName)}</b>`, esc(CFG.contactName), CFG.phone && "Tel " + esc(CFG.phone), CFG.instagram && "Instagram " + esc(CFG.instagram)].filter(Boolean).join(" · ")}</div>`;
@@ -526,13 +516,12 @@ document.addEventListener("click", e => {
   else if (d.act === "share") shareQuote();
   else if (d.act === "print") printQuote();
   else if (d.act === "csv") downloadCSV();
-  else if (d.act === "clear" && confirm("Clear this quote?")) { state.quote = {lines: [], vat: CFG.vatPct, notes: "", ref: "", for: ""}; saveQuote(); render(); }
+  else if (d.act === "clear" && confirm("Clear this quote?")) { state.quote = {lines: [], notes: "", ref: "", for: ""}; saveQuote(); render(); }
 });
 $("#main").addEventListener("input", e => {
   const t = e.target, d = t.dataset;
   if (d.qty) { const l = state.quote.lines.find(x => x.code === d.qty); const n = parseInt(t.value, 10); if (l && n > 0) l.qty = n; }
   else if (t.matches("[data-ov]")) { const l = state.quote.lines.find(x => x.code === d.ov); if (l) l.override = t.value === "" ? null : num(t.value); }
-  else if (t.id === "q-vat") state.quote.vat = t.value;
   else if (t.id === "q-ref") state.quote.ref = t.value.trim();
   else if (t.id === "q-for") state.quote.for = t.value;
   else if (t.id === "q-notes") state.quote.notes = t.value;
