@@ -6,9 +6,15 @@ window.PRICING_CONFIG = {
 
   tab: "Procedures",                // name of the tab holding the price list
 
-  title: "Procedure Pricing",       // shown at the top of the app
-  companyName: "Your Company Ltd",  // shown on printed / shared quotes
-  currency: "GBP",                  // currency of the prices in the sheet
+  // Branding — shown in the app header and on quotes
+  title: "MT Clinic",
+  subtitle: "Nursing Care",
+  companyName: "MT Clinic",
+  contactName: "Ramzi Hashem · Registered Nurse",
+  phone: "03 894 380 · 71 466 324",
+  instagram: "@m.t.clinic_",
+
+  currency: "GBP",                  // currency of the prices in the sheet (e.g. USD, LBP)
   locale: "en-GB",                  // number and date formatting
   vatPct: 20,                       // default VAT on quotes (0 if your services are VAT-exempt)
   quoteValidityDays: 30

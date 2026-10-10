@@ -3,21 +3,22 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#f5f6f8" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#0e1014" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#eaf3ee" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0c1712" media="(prefers-color-scheme: dark)">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="Pricing">
+<meta name="apple-mobile-web-app-title" content="MT Clinic">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icon-180.png">
-<title>Procedure Pricing</title>
+<title>MT Clinic</title>
 <script src="config.js"></script>
 <style>
 :root{
-  --bg:#f5f6f8;--card:#fff;--ink:#15181d;--muted:#667080;--line:#e2e5ea;--soft:#eef0f3;
-  --accent:#1f5bd8;--accent-ink:#fff;
+  /* MT Clinic brand: deep green, mid green, pale mint */
+  --bg:#eaf3ee;--card:#fff;--ink:#1d2a23;--muted:#5f6e66;--line:#d4e3d9;--soft:#e0eee5;
+  --brand:#124a33;--accent:#1f7a4f;--accent-ink:#fff;--sum:#124a33;--sum-ink:#fff;
   --up:#a3520a;--up-bg:#fcefdf;
   --danger:#c93b3b;
   --radius:14px;--shadow:0 1px 2px rgba(0,0,0,.05),0 2px 8px rgba(0,0,0,.04);
@@ -25,8 +26,8 @@
   color-scheme:light dark;
 }
 @media (prefers-color-scheme:dark){:root{
-  --bg:#0e1014;--card:#171a20;--ink:#e7e9ed;--muted:#97a0ae;--line:#272b33;--soft:#1f232a;
-  --accent:#6f96ff;--accent-ink:#0b0d11;
+  --bg:#0c1712;--card:#13221b;--ink:#e4efe8;--muted:#93a89c;--line:#22362b;--soft:#1a2d23;
+  --brand:#9edbb9;--accent:#4cb985;--accent-ink:#06130c;--sum:#1f7a4f;--sum-ink:#fff;
   --up:#f2b46a;--up-bg:#2e2213;--danger:#ff7676;--shadow:none}}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 [hidden]{display:none!important}
@@ -39,7 +40,11 @@ button{cursor:pointer;touch-action:manipulation}
 /* header */
 header.top{position:sticky;top:0;z-index:20;background:var(--bg);padding-top:env(safe-area-inset-top,0px);border-bottom:1px solid var(--line)}
 .bar{display:flex;align-items:center;gap:10px;padding:10px 0 8px}
-.brand{font-weight:700;font-size:18px;letter-spacing:-.01em;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brand{display:flex;align-items:center;gap:10px;flex:1;min-width:0}
+.logo{width:40px;height:40px;flex:none}
+.brand-t{min-width:0}
+.b1{font:700 22px/1.05 Georgia,"Times New Roman",serif;color:var(--brand);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.b2{font-size:10px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--accent);margin-top:3px;white-space:nowrap}
 .sync{font-size:12px;color:var(--muted);white-space:nowrap}
 .sync.off{color:var(--danger)}
 .iconbtn{border:1px solid var(--line);background:var(--card);border-radius:12px;height:44px;min-width:44px;padding:0 10px;display:inline-flex;align-items:center;justify-content:center;gap:6px;text-decoration:none;color:var(--ink);font-size:14px}
@@ -53,7 +58,7 @@ input:focus,textarea:focus{border-color:var(--accent)}
 .chips{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin:0 -16px;padding:0 16px 8px}
 .chips::-webkit-scrollbar{display:none}
 .chip{flex:none;border:1px solid var(--line);background:var(--card);border-radius:22px;padding:0 16px;height:44px;font-size:14px;font-weight:600;color:var(--muted)}
-.chip[aria-pressed=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chip[aria-pressed=true]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
 
 main{padding:14px 0 calc(var(--nav-h) + var(--safe-b) + 24px)}
 main.has-sum{padding-bottom:calc(var(--nav-h) + var(--safe-b) + 96px)}
@@ -61,7 +66,8 @@ main.has-sum{padding-bottom:calc(var(--nav-h) + var(--safe-b) + 96px)}
 .banner.err{background:transparent;border:1px solid var(--danger);color:var(--danger)}
 .banner code{font-size:13px}
 .group{margin-bottom:18px}
-.group h3{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:0 0 6px 4px}
+.name,.meta{unicode-bidi:plaintext;text-align:left}
+.group h3{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin:0 0 6px 4px}
 .list{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
 .row{display:grid;grid-template-columns:1fr auto 44px;gap:12px;align-items:center;padding:12px 12px 12px 14px;border-top:1px solid var(--line)}
 .row:first-child{border-top:0}
@@ -106,11 +112,11 @@ main.has-sum{padding-bottom:calc(var(--nav-h) + var(--safe-b) + 96px)}
 
 /* sticky quote summary */
 .sum{position:fixed;left:0;right:0;bottom:calc(var(--nav-h) + var(--safe-b));z-index:15;padding:8px 16px;pointer-events:none}
-.sum-in{max-width:728px;margin:0 auto;background:var(--ink);color:var(--bg);border-radius:14px;padding:8px 8px 8px 16px;display:flex;align-items:center;gap:10px;pointer-events:auto;box-shadow:0 6px 24px rgba(0,0,0,.18)}
+.sum-in{max-width:728px;margin:0 auto;background:var(--sum);color:var(--sum-ink);border-radius:14px;padding:8px 8px 8px 16px;display:flex;align-items:center;gap:10px;pointer-events:auto;box-shadow:0 6px 24px rgba(0,0,0,.18)}
 .sum-in .t{flex:1;min-width:0}
 .sum-in .t small{display:block;font-size:12px;opacity:.7}
 .sum-in .t b{font-size:18px;font-variant-numeric:tabular-nums}
-.sum-in button{border:0;background:var(--bg);color:var(--ink);height:44px;border-radius:10px;padding:0 16px;font-weight:700}
+.sum-in button{border:0;background:#fff;color:#124a33;height:44px;border-radius:10px;padding:0 16px;font-weight:700}
 
 /* bottom nav */
 nav.bottom{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--card);border-top:1px solid var(--line);padding-bottom:var(--safe-b)}
@@ -118,10 +124,10 @@ nav.bottom .in{max-width:760px;margin:0 auto;display:grid;grid-template-columns:
 .tab{border:0;background:transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:12px;font-weight:600;color:var(--muted);position:relative}
 .tab svg{width:24px;height:24px}
 .tab[aria-selected=true]{color:var(--accent)}
-.count{position:absolute;top:6px;left:calc(50% + 6px);min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--danger);color:#fff;font-size:11px;line-height:18px;text-align:center}
+.count{position:absolute;top:6px;left:calc(50% + 6px);min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--accent);color:var(--accent-ink);font-size:11px;line-height:18px;text-align:center}
 .count:empty{display:none}
 
-.toast{position:fixed;left:50%;bottom:calc(var(--nav-h) + var(--safe-b) + 88px);transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:9px 16px;border-radius:20px;font-size:14px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:50;white-space:nowrap}
+.toast{position:fixed;left:50%;bottom:calc(var(--nav-h) + var(--safe-b) + 88px);transform:translateX(-50%);background:var(--brand);color:var(--bg);padding:9px 16px;border-radius:20px;font-size:14px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:50;white-space:nowrap}
 .toast.show{opacity:1}
 #printArea{display:none}
 
@@ -131,26 +137,31 @@ nav.bottom .in{max-width:760px;margin:0 auto;display:grid;grid-template-columns:
   body{background:#fff;color:#111;font-size:11pt}
   header.top,#main,.toast,nav.bottom,.sum{display:none!important}
   #printArea{display:block}
-  .p-head{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid #111;padding-bottom:10px;margin-bottom:14px}
-  .p-head h1{margin:0;font-size:22pt}
+  .p-head{display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #1f7a4f;padding-bottom:12px;margin-bottom:14px}
+  .p-brand{display:flex;align-items:center;gap:12px}
+  .p-brand .logo{width:54px;height:54px}
+  .p-brand .b1{font-size:24pt;color:#124a33}
+  .p-brand .b2{font-size:8pt;color:#1f7a4f}
+  .p-title{font:700 16pt Georgia,serif;color:#124a33;margin:0 0 10px}
   .p-meta{text-align:right;font-size:10pt;line-height:1.6}
   .p-to{margin-bottom:14px}
   #printArea table{width:100%;border-collapse:collapse}
-  #printArea th{text-align:left;font-size:9pt;text-transform:uppercase;letter-spacing:.04em;border-bottom:1px solid #111;padding:6px 4px}
+  #printArea th{text-align:left;font-size:9pt;text-transform:uppercase;letter-spacing:.04em;color:#124a33;border-bottom:1px solid #124a33;padding:6px 4px}
   #printArea td{padding:7px 4px;border-bottom:1px solid #ddd;vertical-align:top}
   #printArea .n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
   .p-tot{margin:12px 0 0 auto;width:260px}
   .p-tot div{display:flex;justify-content:space-between;padding:3px 0}
-  .p-tot .g{border-top:2px solid #111;font-weight:700;font-size:13pt;padding-top:6px;margin-top:4px}
+  .p-tot .g{color:#124a33;border-top:2px solid #1f7a4f;font-weight:700;font-size:13pt;padding-top:6px;margin-top:4px}
   .p-notes{margin-top:20px;font-size:10pt;white-space:pre-wrap}
-  .p-foot{margin-top:30px;font-size:9pt;color:#666}
+  .p-foot{margin-top:30px;padding-top:10px;border-top:1px solid #cfe0d5;font-size:9pt;color:#555;line-height:1.6}
+  .p-foot b{color:#124a33}
 }
 </style>
 </head>
 <body>
 <header class="top"><div class="wrap">
   <div class="bar">
-    <div class="brand" id="brand">Procedure Pricing</div>
+    <div class="brand"><svg class="logo" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="32" fill="#1f7a4f"/><path d="M26 15h12v11h11v12H38v11H26V38H15V26h11z" fill="#fff"/></svg><div class="brand-t"><div class="b1" id="brand">MT Clinic</div><div class="b2" id="brand2">Nursing Care</div></div></div>
     <span class="sync" id="sync"></span>
     <a class="iconbtn" id="openSheet" target="_blank" rel="noopener" hidden aria-label="Open price sheet">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M4 9h16M4 15h16M10 3v18"/></svg>
@@ -184,7 +195,7 @@ nav.bottom .in{max-width:760px;margin:0 auto;display:grid;grid-template-columns:
 
 /* ---------- config ---------- */
 const USER = window.PRICING_CONFIG || {};
-const CFG = Object.assign({sheetId:"", title:"Procedure Pricing", companyName:"", locale:"en-GB", vatPct:0, quoteValidityDays:30}, USER);
+const CFG = Object.assign({sheetId:"", title:"MT Clinic", subtitle:"", companyName:"", contactName:"", phone:"", instagram:"", locale:"en-GB", vatPct:0, quoteValidityDays:30}, USER);
 CFG.currency = String(USER.currency || USER.defaultCurrency || "GBP").toUpperCase();
 CFG.tab = USER.tab || (USER.tabs && USER.tabs.procedures) || "Procedures";
 const pageUrl = new URL(location.href);
@@ -348,11 +359,11 @@ function viewList() {
     : `<div class="empty"><b>The price list is empty</b>Add rows to the “${esc(CFG.tab)}” tab.</div>`;
   const groups = {};
   items.forEach(p => (groups[p.cat] ||= []).push(p));
-  return Object.entries(groups).map(([cat, ps]) => `<section class="group"><h3>${esc(cat)}</h3><div class="list">` +
+  return Object.entries(groups).map(([cat, ps]) => `<section class="group"><h3 dir="auto">${esc(cat)}</h3><div class="list">` +
     ps.map(p => {
       const inQ = state.quote.lines.find(l => l.code === p.code);
       return `<div class="row">
-        <div><div class="name">${esc(p.name)}</div><div class="meta">${esc(p.code)}${p.unit ? " · per " + esc(p.unit) : ""}${p.desc ? " · " + esc(p.desc) : ""}</div></div>
+        <div><div class="name" dir="auto">${esc(p.name)}</div><div class="meta" dir="auto">${esc(p.code)}${p.unit ? " · per " + esc(p.unit) : ""}${p.desc ? " · " + esc(p.desc) : ""}</div></div>
         <div class="price"><div class="now">${money(p.price)}</div></div>
         <button class="add${inQ ? " in" : ""}" data-add="${esc(p.code)}" aria-label="Add ${esc(p.name)} to quote">${inQ ? "×" + inQ.qty : "+"}</button>
       </div>`;
@@ -381,7 +392,7 @@ function viewQuote() {
   return `
   <div class="list">${q.lines.map(x => `
     <div class="qline" data-line="${esc(x.l.code)}">
-      <div class="qtop"><div class="info"><div class="name">${esc(x.p ? x.p.name : x.l.code)}</div>
+      <div class="qtop"><div class="info"><div class="name" dir="auto">${esc(x.p ? x.p.name : x.l.code)}</div>
         <div class="meta">${esc(x.l.code)}${x.p && x.p.unit ? " · per " + esc(x.p.unit) : ""}${x.p ? "" : " · no longer in price list"}<span class="badge src${x.l.override != null ? " man" : ""}"${basis(x) ? "" : " hidden"}>${basis(x)}</span></div></div>
         <button class="rm" data-rm="${esc(x.l.code)}" aria-label="Remove">×</button></div>
       <div class="qbot">
@@ -446,7 +457,7 @@ function quoteText() {
   if (q.vatPct) L.push(`VAT ${q.vatPct}%: ${money(q.vat)}`);
   L.push(`Total: ${money(q.total)}${q.poa ? " (excluding POA items)" : ""}`);
   if (state.quote.notes.trim()) L.push("", state.quote.notes.trim());
-  if (CFG.companyName) L.push("", CFG.companyName);
+  L.push("", ...[CFG.companyName, CFG.contactName, CFG.phone && "Tel " + CFG.phone, CFG.instagram && "Instagram " + CFG.instagram].filter(Boolean));
   return L.join("\n");
 }
 async function shareQuote() {
@@ -469,8 +480,9 @@ function buildPrint() {
   const q = computeQuote(), ref = state.quote.ref || autoRef(), who = state.quote.for.trim();
   if (!state.loaded || !q.lines.length) { $("#printArea").innerHTML = ""; return; }
   $("#printArea").innerHTML = `
-    <div class="p-head"><div><h1>Quotation</h1><div>${esc(CFG.companyName)}</div></div>
+    <div class="p-head"><div class="p-brand"><svg class="logo" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="32" fill="#1f7a4f"/><path d="M26 15h12v11h11v12H38v11H26V38H15V26h11z" fill="#fff"/></svg><div><div class="b1">${esc(CFG.title)}</div>${CFG.subtitle ? `<div class="b2">${esc(CFG.subtitle)}</div>` : ""}</div></div>
       <div class="p-meta">Ref <b>${esc(ref)}</b><br>Date ${fmtDate(new Date())}<br>Valid until ${fmtDate(validUntil())}</div></div>
+    <h1 class="p-title">Quotation</h1>
     ${who ? `<div class="p-to">Prepared for <b>${esc(who)}</b></div>` : ""}
     <table><thead><tr><th>Code</th><th>Procedure</th><th class="n">Qty</th><th class="n">Unit price</th><th class="n">Total</th></tr></thead><tbody>
     ${q.lines.map(x => `<tr><td>${esc(x.l.code)}</td><td>${esc(x.p ? x.p.name : "")}${x.p && x.p.unit ? `<br><small>per ${esc(x.p.unit)}</small>` : ""}</td><td class="n">${x.l.qty}</td><td class="n">${money(x.unit)}</td><td class="n">${x.total == null ? "POA" : money(x.total)}</td></tr>`).join("")}
@@ -479,7 +491,8 @@ function buildPrint() {
     ${q.vatPct ? `<div><span>VAT ${q.vatPct}%</span><span>${money(q.vat)}</span></div>` : ""}
     <div class="g"><span>Total</span><span>${money(q.total)}</span></div></div>
     ${state.quote.notes.trim() ? `<div class="p-notes">${esc(state.quote.notes.trim())}</div>` : ""}
-    <div class="p-foot">All prices in ${esc(CFG.currency)}.${q.poa ? " POA items are priced on application and not included in the total." : ""}${CFG.companyName ? " " + esc(CFG.companyName) + "." : ""}</div>`;
+    <div class="p-foot">All prices in ${esc(CFG.currency)}.${q.poa ? " POA items are priced on application and not included in the total." : ""}<br>
+      ${[CFG.companyName && `<b>${esc(CFG.companyName)}</b>`, esc(CFG.contactName), CFG.phone && "Tel " + esc(CFG.phone), CFG.instagram && "Instagram " + esc(CFG.instagram)].filter(Boolean).join(" · ")}</div>`;
 }
 function printQuote() { buildPrint(); setTimeout(() => window.print(), 50); }
 window.addEventListener("beforeprint", buildPrint);
@@ -527,6 +540,7 @@ window.addEventListener("online", () => { if (!state.loaded && !state.loading) l
 
 /* ---------- boot ---------- */
 document.title = CFG.title; $("#brand").textContent = CFG.title;
+$("#brand2").textContent = CFG.subtitle; $("#brand2").hidden = !CFG.subtitle;
 if (CFG.sheetId) { const a = $("#openSheet"); a.href = `https://docs.google.com/spreadsheets/d/${encodeURIComponent(CFG.sheetId)}/edit`; a.hidden = false; }
 if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) navigator.serviceWorker.register("sw.js").catch(() => {});
 render(); load();

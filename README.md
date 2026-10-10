@@ -1,4 +1,4 @@
-# Procedure Pricing
+# MT Clinic — Procedure Pricing
 
 A phone-first price list and quote builder. Prices live in one Google Sheet tab; the site is static (no build step, no framework) and hosted free on GitHub Pages. Edit the sheet, tap ↻, done.
 
@@ -28,10 +28,12 @@ The app has no built-in prices: everything comes from your sheet. If the sheet c
 ```js
 sheetId: "1AbC…",
 tab: "Procedures",
-title: "Procedure Pricing", companyName: "Your Company Ltd",
+title: "MT Clinic", subtitle: "Nursing Care",          // app header + quote header
+companyName: "MT Clinic", contactName: "Ramzi Hashem · Registered Nurse",
+phone: "03 894 380 · 71 466 324", instagram: "@m.t.clinic_", // quote footer + shared text
 currency: "GBP", locale: "en-GB", vatPct: 20, quoteValidityDays: 30
 ```
-Set `vatPct: 0` if your services are VAT-exempt (most medical care in the UK is).
+Set `vatPct: 0` if your services are VAT-exempt. Names and notes in the sheet can be Arabic or English.
 
 ### 3. GitHub Pages
 **Settings → Pages → Deploy from a branch →** pick the branch and `(root)` → Save. The site appears at `https://OWNER.github.io/REPO/` after a minute or two.

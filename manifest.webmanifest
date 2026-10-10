@@ -1,11 +1,11 @@
 {
-  "name": "Procedure Pricing",
-  "short_name": "Pricing",
+  "name": "MT Clinic — Nursing Care",
+  "short_name": "MT Clinic",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#f5f6f8",
-  "theme_color": "#1f5bd8",
+  "background_color": "#eaf3ee",
+  "theme_color": "#1f7a4f",
   "icons": [
     { "src": "icon-180.png", "sizes": "180x180", "type": "image/png" },
     { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" },
