@@ -14,8 +14,8 @@ window.PRICING_CONFIG = {
   phone: "03 894 380 · 71 466 324",
   instagram: "@m.t.clinic_",
 
-  currency: "GBP",                  // currency of the prices in the sheet (e.g. USD, LBP)
-  locale: "en-GB",                  // number and date formatting
-  vatPct: 20,                       // default VAT on quotes (0 if your services are VAT-exempt)
+  currency: "USD",                  // currency of the prices in the sheet (e.g. USD, LBP)
+  locale: "en-US",                  // number and date formatting
+  vatPct: 0,                        // default VAT % on quotes (0 = no VAT line)
   quoteValidityDays: 30
 };

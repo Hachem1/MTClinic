@@ -404,7 +404,7 @@ function viewQuote() {
     </div>`).join("")}</div>
   <div class="totals">
     <div><span>Subtotal</span><span id="t-sub">${money(q.sub)}</span></div>
-    <div><span>VAT <span id="t-vp">${q.vatPct}</span>%</span><span id="t-vat">${money(q.vat)}</span></div>
+    <div id="t-vrow"${q.vatPct ? "" : " hidden"}><span>VAT <span id="t-vp">${q.vatPct}</span>%</span><span id="t-vat">${money(q.vat)}</span></div>
     <div class="grand"><span>Total</span><span id="t-tot">${money(q.total)}</span></div>
     <div class="poa" id="t-poa"${q.poa ? "" : " hidden"}>Excludes POA items — type a unit price to include them.</div>
   </div>
@@ -435,6 +435,7 @@ function updateQuoteNumbers() {
   const s = (id, v) => { const el = $(id); if (el) el.textContent = v; };
   s("#t-sub", money(q.sub)); s("#t-vp", q.vatPct); s("#t-vat", money(q.vat)); s("#t-tot", money(q.total));
   const poa = $("#t-poa"); if (poa) poa.hidden = !q.poa;
+  const vr = $("#t-vrow"); if (vr) vr.hidden = !q.vatPct;
   $("#qcount").textContent = qCount() || "";
   renderSum();
 }

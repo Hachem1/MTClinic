@@ -31,9 +31,9 @@ tab: "Procedures",
 title: "MT Clinic", subtitle: "Nursing Care",          // app header + quote header
 companyName: "MT Clinic", contactName: "Ramzi Hashem · Registered Nurse",
 phone: "03 894 380 · 71 466 324", instagram: "@m.t.clinic_", // quote footer + shared text
-currency: "GBP", locale: "en-GB", vatPct: 20, quoteValidityDays: 30
+currency: "USD", locale: "en-US", vatPct: 0, quoteValidityDays: 30
 ```
-Set `vatPct: 0` if your services are VAT-exempt. Names and notes in the sheet can be Arabic or English.
+With `vatPct: 0` the VAT line is hidden; you can still type a VAT % on an individual quote. Names and notes in the sheet can be Arabic or English.
 
 ### 3. GitHub Pages
 **Settings → Pages → Deploy from a branch →** pick the branch and `(root)` → Save. The site appears at `https://OWNER.github.io/REPO/` after a minute or two.
