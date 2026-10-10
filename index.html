@@ -44,9 +44,8 @@ header.top{position:sticky;top:0;z-index:20;background:var(--bg);padding-top:env
 .logo{width:40px;height:40px;flex:none}
 .brand-t{min-width:0}
 .b1{font:700 22px/1.05 Georgia,"Times New Roman",serif;color:var(--brand);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.b2{font-size:10px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--accent);margin-top:3px;white-space:nowrap}
-.sync{font-size:12px;color:var(--muted);white-space:nowrap}
-.sync.off{color:var(--danger)}
+.b2{font-size:10px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--accent);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sync{font-size:12px;color:var(--muted);margin:2px 4px 12px}
 .iconbtn{border:1px solid var(--line);background:var(--card);border-radius:12px;height:44px;min-width:44px;padding:0 10px;display:inline-flex;align-items:center;justify-content:center;gap:6px;text-decoration:none;color:var(--ink);font-size:14px}
 .iconbtn svg{width:18px;height:18px}
 .iconbtn.spin svg{animation:spin 1s linear infinite}
@@ -162,7 +161,6 @@ nav.bottom .in{max-width:760px;margin:0 auto;display:grid;grid-template-columns:
 <header class="top"><div class="wrap">
   <div class="bar">
     <div class="brand"><svg class="logo" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="32" fill="#1f7a4f"/><path d="M26 15h12v11h11v12H38v11H26V38H15V26h11z" fill="#fff"/></svg><div class="brand-t"><div class="b1" id="brand">MT Clinic</div><div class="b2" id="brand2">Nursing Care</div></div></div>
-    <span class="sync" id="sync"></span>
     <a class="iconbtn" id="openSheet" target="_blank" rel="noopener" hidden aria-label="Open price sheet">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M4 9h16M4 15h16M10 3v18"/></svg>
     </a>
@@ -322,11 +320,11 @@ async function load() {
   }
 }
 
+// Sync status lives above the list (not in the header) so the clinic name always fits.
+const syncText = () => state.loading ? "Syncing…" : state.syncedAt ? `Synced ${fmtTime(state.syncedAt)} · ${state.procedures.length} procedure${state.procedures.length === 1 ? "" : "s"}` : "";
 function updateSync() {
-  const el = $("#sync");
   $("#refresh").classList.toggle("spin", state.loading);
-  el.classList.toggle("off", !!state.error);
-  el.textContent = state.loading ? "Syncing…" : state.error ? "Not loaded" : state.syncedAt ? "Synced " + fmtTime(state.syncedAt) : "";
+  const el = $("#sync"); if (el) el.textContent = syncText();
 }
 
 /* ---------- rendering ---------- */
@@ -359,7 +357,7 @@ function viewList() {
     : `<div class="empty"><b>The price list is empty</b>Add rows to the “${esc(CFG.tab)}” tab.</div>`;
   const groups = {};
   items.forEach(p => (groups[p.cat] ||= []).push(p));
-  return Object.entries(groups).map(([cat, ps]) => `<section class="group"><h3 dir="auto">${esc(cat)}</h3><div class="list">` +
+  return `<div class="sync" id="sync">${esc(syncText())}</div>` + Object.entries(groups).map(([cat, ps]) => `<section class="group"><h3 dir="auto">${esc(cat)}</h3><div class="list">` +
     ps.map(p => {
       const inQ = state.quote.lines.find(l => l.code === p.code);
       return `<div class="row">
